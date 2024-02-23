@@ -1,10 +1,15 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan'
+
 import route from './src/router/userOperario';
+import { pool } from './src/db/db';
 
 const app = express()
 
+
+
 const PORT = process.env.PORT ?? 3000
+
 
 app.use(express.json())
 app.use(morgan('dev'))
