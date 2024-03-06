@@ -1,26 +1,26 @@
 import { Client, connect } from 'ts-postgres'
 import { config } from 'dotenv'
+import { PreviewModule } from 'astro'
 
 
 config()
 
-class db_Connect {
+export class db_Connect {
   private static _intance: db_Connect
 
   private constructor() {
   }
 
-  public static async getIntance(): Promise<db_Connect> {
+  public static  getIntance(): db_Connect {
 
     if (!db_Connect._intance) {
       db_Connect._intance = new db_Connect()
-      await db_Connect._intance.connectdb()
     }
     return db_Connect._intance
   }
 
-  private async connectdb(): Promise<Client> {
-    const client = connect({
+  public async connectdb(): Promise<Client>{
+    const client = await connect({
       "host": process.env.HOST,
       "user": process.env.USER,
       "database": process.env.DATABASE,
@@ -31,4 +31,3 @@ class db_Connect {
     return client
   }
 }
-  

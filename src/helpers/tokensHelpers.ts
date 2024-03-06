@@ -16,7 +16,7 @@ declare module 'jsonwebtoken' {
 }
 const processToken = process.env.PASSWORDTOKEN
 
-export const tokenSing = async (user:User) => {
+export const tokenSing = async (user: User) => {
     try {
         return jwt.sign({
             user: user.user,
@@ -29,15 +29,15 @@ export const tokenSing = async (user:User) => {
         throw new Error
     }
 }
-export const userFrom = (jsonwebtoken: string ) :User | undefined =>{
+export const userFrom = (jsonwebtoken: string): User | undefined => {
     try {
-        const {user, passWords} = <jwt.myJwtRol>jwt.verify(jsonwebtoken,processToken)
-        const fromuser: User={
-            user : user,
+        const { user, passWords } = <jwt.myJwtRol>jwt.verify(jsonwebtoken, processToken)
+        const fromuser: User = {
+            user: user,
             passWords: passWords
         }
         return fromuser
     } catch (error) {
-        console.log("aqui esta el error "+ error)
+        console.log("aqui esta el error " + error)
     }
 }
