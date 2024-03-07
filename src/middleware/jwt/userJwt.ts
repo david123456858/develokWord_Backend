@@ -13,6 +13,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
         const decode = token?.split(' ').pop()
         const verify = decode ? decode : ''
         const newDecode = userFrom(verify)
+        console.log(newDecode)
         req.body = newDecode ? newDecode : undefined
         next()
 

@@ -20,7 +20,7 @@ export const tokenSing = async (user: User) => {
     try {
         return jwt.sign({
             user: user.user,
-            password: user.passWords
+            passWords: user.passWords
         }, processToken, {
             expiresIn: '12h'
         }
