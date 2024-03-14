@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { userFrom } from "../../helpers/tokensHelpers";
+import { error } from "console";
 
 
 
@@ -13,7 +14,9 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
         const decode = token?.split(' ').pop()
         const verify = decode ? decode : ''
         const newDecode = userFrom(verify)
-        console.log(newDecode)
+        if(!newDecode){
+            return res.status(401).json({error: "Undefined"})
+        }
         req.body = newDecode ? newDecode : undefined
         next()
 

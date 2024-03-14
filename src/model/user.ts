@@ -1,11 +1,12 @@
 export class User {
-   user: String 
+   user: String
    passWords: String
 
-   constructor(user: String,passWords: String){
+   constructor(user: String, passWords: String) {
 
-    this.user = user
-    this.passWords = passWords
+      this.user = user
+      this.passWords = passWords
    }
 
 }
+

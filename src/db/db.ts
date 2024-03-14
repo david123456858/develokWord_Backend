@@ -1,4 +1,4 @@
-import { Client, connect } from 'ts-postgres'
+import { Pool } from 'pg'
 import { config } from 'dotenv'
 import { PreviewModule } from 'astro'
 
@@ -19,15 +19,14 @@ export class db_Connect {
     return db_Connect._intance
   }
 
-  public async connectdb(): Promise<Client>{
-    const client = await connect({
-      "host": process.env.HOST,
-      "user": process.env.USER,
-      "database": process.env.DATABASE,
-      "password": process.env.PASSWORD,
-      "port": 5432
-    }
-    )
-    return client
+  public connectdb(): Pool{
+    const pool =  new Pool({
+      user:process.env.USER,
+      host:process.env.HOST,
+      password:process.env.PASSWORD,
+      database: process.env.DATABASE,
+      port: 5432
+    })
+    return pool
   }
 }
