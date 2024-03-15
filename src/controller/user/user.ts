@@ -3,7 +3,7 @@ import { tokenSing } from "../../helpers/tokensHelpers";
 import { User } from "../../model/user";
 import { db_Connect } from "../../db/db";
 import { QueryResult } from "pg";
-import { error } from "console";
+
 
 //verificar usuario 
 
@@ -45,20 +45,37 @@ export const createUser = async (req: Request, res: Response) => {
         const { id_user, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
         const response = await connect.query(`INSERT INTO usuarios(
             id_usuario, nombre1, nombre2, apellido1, correo, contraseña, id_rol, id_estado, apellido2)
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,[id_user,nombre1,nombre2,apellido1,correo,contra,rol,estado,apellido2])
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [id_user, nombre1, nombre2 ?? '', apellido1, correo, contra, rol, estado, apellido2 ?? ''])
         connect.end().then((result => {
             console.log("Base de datos cerrada correctamente")
         }))
-        res.status(200).json({data: "Se ha guardado correctamente el usuario"})
-    } catch (error) { 
+        res.status(200).json({ data: "Se ha guardado correctamente el usuario" })
+    } catch (error) {
         console.log(error)
         res.status(505).json({ info: "Internal error server" })
     }
 }
 
-export const getAllUser = async (req:Request,res:Response)=>{
-    const response = await connect.query(`SELECT * FROM usuarios WHERE usuarios.id_rol = '2' `)
-    res.status(200).json({data: response.rows})
+export const getAllUser = async (req: Request, res: Response) => {
+    try {
+        const response = await connect.query(`SELECT * FROM usuarios WHERE usuarios.id_rol = '2' `)
+        res.status(200).json({ data: response.rows })
+    } catch (error) {
+        console.log(error)
+        res.status(505).json({ info: "Internal error server" })
+    }
+}
+
+export const updateUserTeams = async (req: Request, res: Response)=>{
+    try {
+        const {id_user,id_equipo} = req.body
+        const response:QueryResult = await connect.query('')
+    } catch (error) {
+        
+    }
+}
+export const updateUser = async (req: Request, res: Response)=>{
+
 }
 /* INSERT INTO public.usuarios(
     id_usuario, nombre1, nombre2, apellido1, correo, "contraseña", id_equipo, id_rol, id_estado, apellido2)
@@ -75,7 +92,7 @@ export const getAllUser = async (req:Request,res:Response)=>{
     
     
     UPDATE public.usuarios
-    SET id_usuario=?, nombre1=?, nombre2=?, apellido1=?, correo=?, "contraseña"=?, id_equipo=?, id_rol=?, id_estado=?, apellido2=?
+    SET id_usuario=?, nombre1=?, nombre2=?, apellido1=?, correo=?, contraseña=?, id_equipo=?, id_rol=?, id_estado=?, apellido2=?
     WHERE <condition>;
 
     DELETE FROM public.usuarios
