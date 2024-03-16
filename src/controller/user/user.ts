@@ -9,16 +9,14 @@ import { QueryResult } from "pg";
 
 const _db = db_Connect.getIntance()
 const connect = _db.connectdb()
+
 export const verifyUser = async (req: Request, res: Response) => {
     try {
         const userReq = req.body
         const response: QueryResult = await connect.query(`SELECT * FROM USUARIOS WHERE usuarios.correo = '${userReq.user}' AND usuarios.contraseña = '${userReq.passWords}'`)
         console.log(response.rows)
         res.status(200).json(response.rows)
-        connect.end()
-            .then((result) => {
-                console.log("base de datos cerrada correctamente")
-            })
+        
     } catch (error) {
         res.status(505).json({ info: "Error internal Server" })
         console.log(error)
@@ -46,9 +44,6 @@ export const createUser = async (req: Request, res: Response) => {
         const response = await connect.query(`INSERT INTO usuarios(
             id_usuario, nombre1, nombre2, apellido1, correo, contraseña, id_rol, id_estado, apellido2)
             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [id_user, nombre1, nombre2 ?? '', apellido1, correo, contra, rol, estado, apellido2 ?? ''])
-        connect.end().then((result => {
-            console.log("Base de datos cerrada correctamente")
-        }))
         res.status(200).json({ data: "Se ha guardado correctamente el usuario" })
     } catch (error) {
         console.log(error)
