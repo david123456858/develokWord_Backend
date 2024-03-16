@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
 import { connect } from "../user/user";
-import { ExitStatus } from "typescript";
-
-
 
 
 export const createTeams = async (req: Request, res: Response) => {
@@ -32,4 +29,7 @@ export const getIdTeam = async () => {
 export const updateTeams = async () => {
 
 }
-// INSERT INTO public.equipos(id_equipo, nombre) VALUES (?, ?);
+// 
+// INSERT INTO public.equipos(id_equipo, nombre, id_estado) VALUES (?, ?, ?);
+// UPDATE public.equiposSET id_equipo=?, nombre=?, id_estado=? WHERE <condition>;
+// DELETE FROM public.equipos WHERE <condition>;

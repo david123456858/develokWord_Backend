@@ -13,10 +13,11 @@ export const connect = _db.connectdb()
 export const verifyUser = async (req: Request, res: Response) => {
     try {
         const userReq = req.body
-        const response: QueryResult = await connect.query(`SELECT * FROM USUARIOS WHERE usuarios.correo = '${userReq.user}' AND usuarios.contraseña = '${userReq.passWords}'`)
+        const response: QueryResult = await connect.query(`SELECT * FROM USUARIOS WHERE 
+        usuarios.correo = '${userReq.user}' AND usuarios.contraseña = '${userReq.passWords}'`)
         console.log(response.rows)
         res.status(200).json(response.rows)
-        
+
     } catch (error) {
         res.status(505).json({ info: "Error internal Server" })
         console.log(error)
@@ -54,7 +55,8 @@ export const createUser = async (req: Request, res: Response) => {
 export const getAllUser = async (req: Request, res: Response) => {
     try {
         //Ojo que no puedes mandar todos los datos solo los pertinentes como nombres cedula 
-        const response = await connect.query(`SELECT id_usuario, nombre1, nombre2, apellido1,apellido2,id_estado FROM usuarios WHERE usuarios.id_rol = '2' `)
+        const response = await connect.query(`SELECT id_usuario, nombre1, nombre2, apellido1 ,apellido2,id_estado 
+        FROM usuarios WHERE usuarios.id_rol = '2' `)
         res.status(200).json({ data: response.rows })
     } catch (error) {
         console.log(error)
@@ -62,22 +64,22 @@ export const getAllUser = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUserTeams = async (req: Request, res: Response)=>{
+export const updateUserTeams = async (req: Request, res: Response) => {
     try {
-        const {id_user,id_team} = req.body
-        const response:QueryResult = await connect.query(`UPDATE public.usuarios
+        const { id_user, id_team } = req.body
+        const response: QueryResult = await connect.query(`UPDATE public.usuarios
             SET id_equipo=$1
-            WHERE usuarios.id_usuario ='${id_user}'`,[id_team])
-            res.status(200).json({data : "Usuario asignado a un grupos"})
-            console.log(response)
+            WHERE usuarios.id_usuario ='${id_user}'`, [id_team])
+        res.status(200).json({ data: "Usuario asignado a un grupos" })
+        console.log(response)
     } catch (error) {
         console.log(error)
         res.status(505).json({ info: "Internal error server" })
     }
 }
-export const updateUser = async (req: Request, res: Response)=>{
+export const updateUser = async (req: Request, res: Response) => {
     try {
-        
+
     } catch (error) {
         console.log(error)
         res.status(505).json({ info: "Internal error server" })
