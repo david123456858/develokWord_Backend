@@ -8,7 +8,7 @@ import { QueryResult } from "pg";
 //verificar usuario 
 
 const _db = db_Connect.getIntance()
-const connect = _db.connectdb()
+export const connect = _db.connectdb()
 
 export const verifyUser = async (req: Request, res: Response) => {
     try {
@@ -64,10 +64,10 @@ export const getAllUser = async (req: Request, res: Response) => {
 
 export const updateUserTeams = async (req: Request, res: Response)=>{
     try {
-        const {id_user,id_equipo} = req.body
+        const {id_user,id_team} = req.body
         const response:QueryResult = await connect.query(`UPDATE public.usuarios
             SET id_equipo=$1
-            WHERE usuarios.id_usuario =${id_user}`,[id_equipo])
+            WHERE usuarios.id_usuario ='${id_user}'`,[id_team])
             res.status(200).json({data : "Usuario asignado a un grupos"})
             console.log(response)
     } catch (error) {
@@ -79,25 +79,26 @@ export const updateUser = async (req: Request, res: Response)=>{
     try {
         
     } catch (error) {
-        
+        console.log(error)
+        res.status(505).json({ info: "Internal error server" })
     }
 }
 /* INSERT INTO public.usuarios(
-    id_usuario, nombre1, nombre2, apellido1, correo, "contraseña", id_equipo, id_rol, id_estado, apellido2)
+    id_usuario, nombre1, nombre2, apellido1, correo, "contraseña", id_team, id_rol, id_estado, apellido2)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 
-   INSERT INTO public.equipos(
-    id_equipo, nombre)
+   INSERT INTO public_teams(
+    id_team, nombre)
     VALUES (?, ?);
 
    INSERT INTO public."ordenes "(
-    id_orden, comentarios, id_equipo, id_prioridad)
+    id_orden, comentarios, id_team, id_prioridad)
     VALUES (?, ?, ?, ?);
     
     
     UPDATE public.usuarios
-    SET id_usuario=?, nombre1=?, nombre2=?, apellido1=?, correo=?, contraseña=?, id_equipo=?, id_rol=?, id_estado=?, apellido2=?
+    SET id_usuario=?, nombre1=?, nombre2=?, apellido1=?, correo=?, contraseña=?, id_team=?, id_rol=?, id_estado=?, apellido2=?
     WHERE <condition>;
 
     DELETE FROM public.usuarios
