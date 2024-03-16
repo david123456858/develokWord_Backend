@@ -11,4 +11,5 @@ routeUser.get(`${routeBase}/login`, checkJwt,verifyUser)
 routeUser.get(`${routeBase}/create`,createToken)
 routeUser.post(`${routeBase}/createUser`,createUser)
 routeUser.get(`${routeBase}/getUsers`,getAllUser)
+
 export default routeUser 

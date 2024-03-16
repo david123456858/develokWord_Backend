@@ -58,7 +58,8 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getAllUser = async (req: Request, res: Response) => {
     try {
-        const response = await connect.query(`SELECT * FROM usuarios WHERE usuarios.id_rol = '2' `)
+        //Ojo que no puedes mandar todos los datos solo los pertinentes como nombres cedula 
+        const response = await connect.query(`SELECT id_usuario, nombre1, nombre2, apellido1,apellido2,id_estado FROM usuarios WHERE usuarios.id_rol = '2' `)
         res.status(200).json({ data: response.rows })
     } catch (error) {
         console.log(error)
@@ -69,13 +70,22 @@ export const getAllUser = async (req: Request, res: Response) => {
 export const updateUserTeams = async (req: Request, res: Response)=>{
     try {
         const {id_user,id_equipo} = req.body
-        const response:QueryResult = await connect.query('')
+        const response:QueryResult = await connect.query(`UPDATE public.usuarios
+            SET id_equipo=$1
+            WHERE usuarios.id_usuario =${id_user}`,[id_equipo])
+            res.status(200).json({data : "Usuario asignado a un grupos"})
+            console.log(response)
     } catch (error) {
-        
+        console.log(error)
+        res.status(505).json({ info: "Internal error server" })
     }
 }
 export const updateUser = async (req: Request, res: Response)=>{
-
+    try {
+        
+    } catch (error) {
+        
+    }
 }
 /* INSERT INTO public.usuarios(
     id_usuario, nombre1, nombre2, apellido1, correo, "contraseña", id_equipo, id_rol, id_estado, apellido2)
