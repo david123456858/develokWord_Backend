@@ -7,5 +7,6 @@ const routeTeams = Router()
 
 routeTeams.post(`${routeBaseTeams}/createTeams`, createTeams)
 routeTeams.get(`${routeBaseTeams}/teams`, getAll)
+routeTeams.put(`${routeBaseTeams}/updateTeams`)
 
 export default routeTeams
