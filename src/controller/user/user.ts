@@ -14,7 +14,7 @@ export const connect = _db.connectdb()
 export const verifyUser = async (req: Request, res: Response) => {
     try {
         const userReq = req.body
-        const response: QueryResult = await connect.query(`SELECT * FROM USUARIOS WHERE 
+        const response: QueryResult = await connect.query(`SELECT id_usuario,nombre1,nombre2,apellido1,apellido2,correo FROM USUARIOS WHERE 
         usuarios.correo = '${userReq.user}' AND usuarios.contraseña = '${userReq.passWords}'`)
         console.log(response.rows)
         res.status(200).json(response.rows)
@@ -29,7 +29,7 @@ export const createToken = async (req: Request, res: Response) => {
     try {
         const user: User = {
             user: "juandavid@gmail.com",
-            passWords: "12345678"
+            passWords: "2004"
         }
         const token = await tokenSing(user)
         res.json({ data: token })
@@ -122,28 +122,15 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 }
 
-export const changePassWord = () => {
+export const changePassWord = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id
+        const { passWordsNew } = req.body
+        const responde = connect.query(`UPDATE public.usuarios SET contraseña =$1 WHERE id_usuario = '${id}'`,[passWordsNew])
+        res.status(200).json({data:"User change succesFully passwords"})
 
+    } catch (error) {
+        console.log(error)
+        res.status(505).json({ info: "Internal error server" })
+    }
 }
-/* INSERT INTO public.usuarios(
-    id_usuario, nombre1, nombre2, apellido1, correo, "contraseña", id_team, id_rol, id_estado, apellido2)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-
-
-   INSERT INTO public_teams(
-    id_team, nombre)
-    VALUES (?, ?);
-
-   INSERT INTO public."ordenes "(
-    id_orden, comentarios, id_team, id_prioridad)
-    VALUES (?, ?, ?, ?);
-    
-    
-    UPDATE public.usuarios
-    SET id_usuario=?, nombre1=?, nombre2=?, apellido1=?, correo=?, contraseña=?, id_team=?, id_rol=?, id_estado=?, apellido2=?
-    WHERE <condition>;
-
-    DELETE FROM public.usuarios
-    WHERE <condition>;
-    
-    */
