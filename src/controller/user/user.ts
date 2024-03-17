@@ -80,39 +80,42 @@ export const updateUserTeams = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        // const id = (req.params.id)
-        // const { name1, name2, lastname1, lastname2 } = req.body
-        // let quer = 'UPDATE public.usuarios SET'
-        // const updateQuery = []
-        // let index = 1
-        // if (!name1) {
-        //     quer += `nombre1=$${index},`
-        //     updateQuery.push(name1)
-        //     index++
-        // }
-        // if (!name2) {
-        //     quer += `nombre2=$${index},`
-        //     updateQuery.push(name2)
-        //     index++
-        // }
-        // if (!lastname1) {
-        //     quer += `apellido1=$${index},`
-        //     updateQuery.push(lastname1)
-        //     index++
-        // }
-        // if (!lastname2) {
-        //     quer += `apellido2=$${index},`
-        //     updateQuery.push(lastname2)
-        //     index++
-        // }
-        // quer = quer.slice(0,-1)
-        // quer+= `WHERE = id_usuario = '${id}'`
-        // const response = connect.query(quer, updateQuery)
-        // .catch((error)=>{
-        //     return console.log(error)
-        //     res.status(505).json({ info: "Internal error server" })
-        // })
-        return res.status(202).json({ data: `update user succeFully` })
+        const id = (req.params.id)
+        const { name1, name2, lastname1, lastname2 } = req.body
+        let quer = 'UPDATE public.usuarios SET '
+        const updateQuery = []
+        let index = 1
+        if (name1) {
+            quer += `nombre1=$${index} ,`
+            updateQuery.push(name1)
+            index++
+        }
+        if (name2) {
+            quer += `nombre2=$${index} ,`
+            updateQuery.push(name2)
+            index++
+        }
+        if (lastname1) {
+            quer += `apellido1=$${index} ,`
+            updateQuery.push(lastname1)
+            index++
+        }
+        if (lastname2) {
+            quer += `apellido2=$${index} ,`
+            updateQuery.push(lastname2)
+            index++
+        }
+        quer = quer.slice(0, -1)
+        quer += `WHERE id_usuario = '${id}'`
+        console.log(quer)
+
+        console.log(updateQuery)
+        const response = connect.query(quer, updateQuery)
+            .catch((error) => {
+                return console.log(error)
+                res.status(505).json({ info: "Internal error server" })
+            })
+        res.status(202).json({ data: `update user succeFully` })
     } catch (error) {
         console.log(error)
         res.status(505).json({ info: "Internal error server" })
