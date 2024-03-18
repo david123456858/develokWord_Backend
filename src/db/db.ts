@@ -1,6 +1,7 @@
 import { Pool } from 'pg'
 import { config } from 'dotenv'
-import { PreviewModule } from 'astro'
+import { URL, URLSearchParams, Url } from 'url'
+import { url } from 'inspector'
 
 
 config()
@@ -20,12 +21,15 @@ export class db_Connect {
   }
 
   public connectdb(): Pool{
+    
     const pool =  new Pool({
+      
       user:process.env.USER,
       host:process.env.HOST,
       password:process.env.PASSWORD,
       database: process.env.DATABASE,
-      port: 5432
+      port: parseInt(process.env.PGPORT ?? '')
+      
     })
     return pool
   }
