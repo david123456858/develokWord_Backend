@@ -3,7 +3,7 @@ import { tokenSing } from "../../helpers/tokensHelpers";
 import { User } from "../../model/user";
 import { db_Connect } from "../../db/db";
 import { QueryResult } from "pg";
-import { error } from "console";
+
 
 
 //verificar usuario 
