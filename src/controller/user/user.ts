@@ -1,10 +1,8 @@
-import { Request, Response, query } from "express";
+import { Request, Response} from "express";
 import { tokenSing } from "../../helpers/tokensHelpers";
 import { User } from "../../model/user";
 import { db_Connect } from "../../db/db";
 import { QueryResult } from "pg";
-
-
 
 //verificar usuario 
 
@@ -82,7 +80,7 @@ export const updateUser = async (req: Request, res: Response) => {
     try {
         const id = (req.params.id)
         const { name1, name2, lastname1, lastname2 } = req.body
-        let quer = 'UPDATE public.usuarios SET '
+        let quer:string = 'UPDATE public.usuarios SET '
         const updateQuery = []
         let index = 1
         if (name1) {

@@ -17,7 +17,7 @@ export class db_Connect {
     if (!db_Connect._intance) {
       db_Connect._intance = new db_Connect()
     }
-    return db_Connect._intance
+    return db_Connect._intance // sigleton 
   }
 
   public connectdb(): Pool{

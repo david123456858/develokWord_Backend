@@ -8,16 +8,15 @@ const app = express()
 
 const PORT = process.env.PORT ?? 3000
 
-app.disable('x-powered-by')
+app.disable('x-powered-by')// cabecera que no permite darle a la persona la info de la creacion
 app.use(express.json())
-app.use(morgan('dev'))
+app.use(morgan('dev')) 
 app.use(routeUser)
 app.use(routeTeams)
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Bienvenido a DelevolkWord 2.0 mejorado")
 })
-
 
 app.listen(PORT, () => {
     console.log(`El servidor esta escuchando http://localhost:${PORT}`)
