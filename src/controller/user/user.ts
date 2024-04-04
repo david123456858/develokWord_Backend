@@ -26,8 +26,8 @@ export const verifyUser = async (req: Request, res: Response) => {
 export const createToken = async (req: Request, res: Response) => {
     try {
         const user: User = {
-            user: "juandavid@gmail.com",
-            passWords: "2004"
+            user: "kadir@gmail.com",
+            passWords: "angora"
         }
         const token = await tokenSing(user)
         res.json({ data: token })
