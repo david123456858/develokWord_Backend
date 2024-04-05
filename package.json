@@ -9,6 +9,9 @@
     "tsc": "tsc",
     "dev": "ts-node-dev --respawn --ignore-watch node_modules app.ts"
   },
+  "engines": {
+    "node": ">=18.18.0 <19.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
