@@ -11,6 +11,7 @@ const PORT = process.env.PORT ?? 3000
 app.use(cors({
     origin: '*'
 }))
+
 app.disable('x-powered-by')// cabecera que no permite darle a la persona la info de la creacion
 app.use(express.json())
 app.use(morgan('dev')) 

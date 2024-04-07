@@ -26,12 +26,13 @@ export const verifyUser = async (req: Request, res: Response) => {
 
 export const createToken = async (req: Request, res: Response) => {
     try {
+        const users = "kadir@gmail.com"
         const user: User = {
-            user: "kadir@gmail.com",
+            user: users,
             passWords: "angora"
         }
         const token = await tokenSing(user)
-        res.json({ data: token })
+        res.status(20).json({info:{ data: token,message:"Token Creado" }})
     } catch (error) {
         res.status(505).json({ info: "Error internal Server" })
         console.log(error)
@@ -43,10 +44,9 @@ export const createUser = async (req: Request, res: Response) => {
         const queryDefault: string = `INSERT INTO usuarios(
             id_usuario, nombre1, nombre2, apellido1, correo, contraseña, id_rol, id_estado, apellido2)
             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`
-        console.log(req.body)
-
+        // console.log(req.body)
         const { id_user, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
-        if (!id_user || !nombre1 || !apellido1|| !correo || !contra || !rol || !estado) {
+        if (!id_user || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
             res.status(422).json({
                 detail: {
                     info: "Unprocessable Content",
@@ -57,6 +57,7 @@ export const createUser = async (req: Request, res: Response) => {
         }
         const response: QueryResult = await connect.query(queryDefault,
             [id_user, nombre1, nombre2 ?? '', apellido1, correo, contra, rol, estado, apellido2 ?? ''])
+            console.log(response)
         res.status(200).json({ data: "Se ha guardado correctamente el usuario" })
     } catch (error) {
         console.log(error)
