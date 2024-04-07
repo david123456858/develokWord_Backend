@@ -12,6 +12,7 @@ export const saveOrders = (req: Request, res: Response) => {
         description: description,
         timeFinished: TimeFinished,
       }
+      res.status(200).json(finishedOrder)
 }
 // INSERT INTO public."ordenes "(
 // 	id_orden, comentarios, id_equipo, id_prioridad)
