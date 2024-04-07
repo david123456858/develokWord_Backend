@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { saveOrders } from "../../controller/orders/orders";
-import exp from "constants";
+
 
 
 const routerOrders = Router();
-const routeBase:string = "ordenes"
+const routeBase:string = '/api/v1/ordenes'
 
 routerOrders.post(`/${routeBase}save`, saveOrders);
 routerOrders.get(`/${routeBase}`, saveOrders);
