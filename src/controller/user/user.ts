@@ -26,19 +26,19 @@ export const verifyUser = async (req: Request, res: Response) => {
 
 export const createToken = async (req: Request, res: Response) => {
     try {
-        const users = "kadir@gmail.com"
+        const users = "LauAltahona@gmail.com"
         const user: User = {
             user: users,
-            passWords: "angora"
+            passWords: "berlin1234"
         }
         const token = await tokenSing(user)
-        res.status(20).json({info:{ data: token,message:"Token Creado" }})
+        res.status(200).json({info:{ data: token,message:"Token Creado" }})
     } catch (error) {
         res.status(505).json({ info: "Error internal Server" })
         console.log(error)
     }
 }
-
+ 
 export const createUser = async (req: Request, res: Response) => {
     try {
         const queryDefault: string = `INSERT INTO usuarios(
@@ -58,7 +58,7 @@ export const createUser = async (req: Request, res: Response) => {
         const response: QueryResult = await connect.query(queryDefault,
             [id_user, nombre1, nombre2 ?? '', apellido1, correo, contra, rol, estado, apellido2 ?? ''])
             console.log(response)
-        res.status(200).json({ data: "Se ha guardado correctamente el usuario" })
+        res.status(201).json({ data: "Se ha guardado correctamente el usuario" })
     } catch (error) {
         console.log(error)
         res.status(505).json({ info: "Internal error server" })

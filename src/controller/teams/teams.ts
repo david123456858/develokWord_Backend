@@ -18,7 +18,7 @@ export const createTeams = async (req: Request, res: Response) => {
             id_equipo, nombre, id_estado, descrip)
             VALUES ($1, $2, $3, $4);`, [id_equipo, nombre_equipo, estado, descripcion])
 
-        res.status(200).json({ data: 'El equipo ha sido creado corretamente' })
+        res.status(201).json({ data: 'El equipo ha sido creado corretamente' })
 
     } catch (error) {
         console.log(error)

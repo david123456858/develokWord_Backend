@@ -6,7 +6,7 @@ const routeBaseTeams: String = '/api/v1/teams'
 const routeTeams = Router()
 
 routeTeams.post(`${routeBaseTeams}/createTeams`, createTeams)
-routeTeams.get(`${routeBaseTeams}/teams`, getAll)
+routeTeams.get(`${routeBaseTeams}`, getAll)
 routeTeams.put(`${routeBaseTeams}/updateTeams`)
 
 export default routeTeams

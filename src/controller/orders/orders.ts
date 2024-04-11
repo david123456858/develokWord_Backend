@@ -29,8 +29,9 @@ export const getPrioridades = async (req: Request, res: Response) => {
   try {
     const query = `SELECT * FROM prioridades`
     const reponse: QueryResult = await connect.query(query)
-    res.status(200).json(reponse.rows)
+    res.status(200).json({data:reponse.rows})
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       data: {
         message: "Internal Server Error",

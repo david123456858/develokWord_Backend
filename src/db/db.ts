@@ -6,7 +6,8 @@ import { config } from 'dotenv'
 config()
 
 export class db_Connect {
-  private static _intance: db_Connect
+  
+  private static _intance: db_Connect// hago una traibuto de la clase a la cual le voy aplicar el patron
 
   private constructor() {
   }
