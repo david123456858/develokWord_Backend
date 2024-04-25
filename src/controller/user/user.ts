@@ -3,12 +3,14 @@ import { tokenSing } from "../../helpers/tokensHelpers";
 import { User } from "../../model/user";
 import { db_Connect } from "../../db/db";
 import { QueryResult } from "pg";
-import { assert } from "console";
+import bcrypt from "bcryptjs"
+import { promises } from "readline";
 
 //verificar usuario 
 
 const _db = db_Connect.getIntance()
 export const connect = _db.connectdb()
+
 
 export const verifyUser = async (req: Request, res: Response) => {
     try {
@@ -38,7 +40,7 @@ export const createToken = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
- 
+
 export const createUser = async (req: Request, res: Response) => {
     try {
         const queryDefault: string = `INSERT INTO usuarios(
@@ -160,3 +162,12 @@ export const getInfo = async (req: Request, res: Response) => {
         res.status(505).json({ info: "Internal error server" })
     }
 }   
+
+export const encryptPassWord = async(pass:string)=>{
+    const sal = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(pass,sal)
+    return hash
+}
+export const comparePassWord = async (pass:string, hash:string)=>{
+    return await bcrypt.compare(pass, hash)
+}
