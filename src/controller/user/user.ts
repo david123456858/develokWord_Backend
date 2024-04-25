@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
-import { tokenSing } from "../../helpers/tokensHelpers";
-import { User } from "../../model/user";
-import { db_Connect } from "../../db/db";
 import { QueryResult } from "pg";
-import bcrypt from "bcryptjs"
-import { promises } from "readline";
+import { Request, Response } from "express"
+
+import { tokenSing } from "../../helpers/tokensHelpers"
+import { User } from "../../model/user"
+import { db_Connect } from "../../db/db"
+import { encryptPassWord,comparePassWord } from "../../helpers/encryp"
+
 
 //verificar usuario 
 
@@ -48,6 +49,9 @@ export const createUser = async (req: Request, res: Response) => {
             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`
         // console.log(req.body)
         const { id_user, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
+        const password = await encryptPassWord(contra)
+        console.log(password);
+        
         if (!id_user || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
             res.status(422).json({
                 detail: {
@@ -58,7 +62,7 @@ export const createUser = async (req: Request, res: Response) => {
             return
         }
         const response: QueryResult = await connect.query(queryDefault,
-            [id_user, nombre1, nombre2 ?? '', apellido1, correo, contra, rol, estado, apellido2 ?? ''])
+            [id_user, nombre1, nombre2 ?? '', apellido1, password, contra, rol, estado, apellido2 ?? ''])
             console.log(response)
         res.status(201).json({ data: "Se ha guardado correctamente el usuario" })
     } catch (error) {
@@ -137,8 +141,10 @@ export const changePassWord = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
         const { passWordsNew } = req.body
+        const pass = await encryptPassWord(passWordsNew)
+        console.log(pass)
         const queryDefault: string = `UPDATE public.usuarios SET contraseña =$2 WHERE id_usuario = $1`
-        const responde: QueryResult = await connect.query(queryDefault, [id, passWordsNew])
+        const responde: QueryResult = await connect.query(queryDefault, [id, pass])
         res.status(200).json({ data: "User change succesFully passwords" })
 
     } catch (error) {
@@ -163,11 +169,4 @@ export const getInfo = async (req: Request, res: Response) => {
     }
 }   
 
-export const encryptPassWord = async(pass:string)=>{
-    const sal = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(pass,sal)
-    return hash
-}
-export const comparePassWord = async (pass:string, hash:string)=>{
-    return await bcrypt.compare(pass, hash)
-}
+
