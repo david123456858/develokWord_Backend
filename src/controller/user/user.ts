@@ -29,7 +29,7 @@ export const verifyUser = async (req: Request, res: Response) => {
 
 export const createToken = async (req: Request, res: Response) => {
     try {
-        const users = "LauAltahona@gmail.com"
+        const users = "LaurAltahona@gmail.com"
         const user: User = {
             user: users,
             passWords: "berlin1234"
@@ -50,7 +50,7 @@ export const createUser = async (req: Request, res: Response) => {
         // console.log(req.body)
         const { id_user, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
         const password = await encryptPassWord(contra)
-        console.log(password);
+        //console.log(password);
         
         if (!id_user || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
             res.status(422).json({
@@ -62,7 +62,7 @@ export const createUser = async (req: Request, res: Response) => {
             return
         }
         const response: QueryResult = await connect.query(queryDefault,
-            [id_user, nombre1, nombre2 ?? '', apellido1, password, contra, rol, estado, apellido2 ?? ''])
+            [id_user, nombre1, nombre2 ?? '', apellido1, correo, password, rol, estado, apellido2 ?? ''])
             console.log(response)
         res.status(201).json({ data: "Se ha guardado correctamente el usuario" })
     } catch (error) {
@@ -140,8 +140,8 @@ export const updateUser = async (req: Request, res: Response) => {
 export const changePassWord = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
-        const { passWordsNew } = req.body
-        const pass = await encryptPassWord(passWordsNew)
+        const { contra } = req.body
+        const pass = await encryptPassWord(contra)
         console.log(pass)
         const queryDefault: string = `UPDATE public.usuarios SET contraseña =$2 WHERE id_usuario = $1`
         const responde: QueryResult = await connect.query(queryDefault, [id, pass])

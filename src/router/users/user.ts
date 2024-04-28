@@ -17,4 +17,3 @@ routeUser.put(`${routeBase}/updateUser/:id`, updateUser)
 routeUser.put(`${routeBase}/newPass/:id`,changePassWord)
 
 export default routeUser 
-// [{"id_usuario":"1003380427 ","nombre1":"Kadir          ","nombre2":"Eduardo        ","apellido1":"Quintero       ","apellido2":"Acosta         ","correo":"kadir@gmail.com                                   "}]
