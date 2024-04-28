@@ -4,7 +4,7 @@ import { Request, Response } from "express"
 import { tokenSing } from "../../helpers/tokensHelpers"
 import { User } from "../../model/user"
 import { db_Connect } from "../../db/db"
-import { encryptPassWord,comparePassWord } from "../../helpers/encryp"
+import { encryptPassWord, comparePassWord } from "../../helpers/encryp"
 
 
 //verificar usuario 
@@ -16,11 +16,30 @@ export const connect = _db.connectdb()
 export const verifyUser = async (req: Request, res: Response) => {
     try {
         const userReq = req.body
-        const response: QueryResult = await connect.query(`SELECT id_usuario,nombre1,nombre2,apellido1,apellido2,correo FROM USUARIOS WHERE 
-        usuarios.correo = '${userReq.user}' AND usuarios.contraseña = '${userReq.passWords}'`)
-        console.log(response.rows)
-        res.status(200).json(response.rows)
-
+        let response: QueryResult = await connect.query(`SELECT contraseña FROM USUARIOS WHERE 
+        usuarios.correo = $1`, [userReq.user])
+        if (response.rowCount === 0) {
+            res.status(404).json({
+                detail: {
+                    info: "Not Found",
+                    message: "Usuario no encontrado"
+                }
+            })
+            return
+        }
+        const { contraseña } = response.rows[0]
+        if (await comparePassWord(userReq.passWords, contraseña)) {
+            response = await connect.query(`SELECT id_usuario,nombre1,nombre2,apellido1,apellido2,correo FROM USUARIOS WHERE 
+                usuarios.correo = $1`, [userReq.user])
+            res.status(200).json({ info: { data: response.rows, message: "Usuario encontrado" } })
+        }else{
+            res.status(404).json({
+                detail: {
+                    info: "Not Found",
+                    message: "Mala contraseña"
+                }
+            })
+        }
     } catch (error) {
         res.status(505).json({ info: "Error internal Server" })
         console.log(error)
@@ -32,10 +51,10 @@ export const createToken = async (req: Request, res: Response) => {
         const users = "LaurAltahona@gmail.com"
         const user: User = {
             user: users,
-            passWords: "berlin1234"
+            passWords: "Berlin12345"
         }
         const token = await tokenSing(user)
-        res.status(200).json({info:{ data: token,message:"Token Creado" }})
+        res.status(200).json({ info: { data: token, message: "Token Creado" } })
     } catch (error) {
         res.status(505).json({ info: "Error internal Server" })
         console.log(error)
@@ -51,7 +70,7 @@ export const createUser = async (req: Request, res: Response) => {
         const { id_user, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
         const password = await encryptPassWord(contra)
         //console.log(password);
-        
+
         if (!id_user || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
             res.status(422).json({
                 detail: {
@@ -63,7 +82,7 @@ export const createUser = async (req: Request, res: Response) => {
         }
         const response: QueryResult = await connect.query(queryDefault,
             [id_user, nombre1, nombre2 ?? '', apellido1, correo, password, rol, estado, apellido2 ?? ''])
-            console.log(response)
+        console.log(response)
         res.status(201).json({ data: "Se ha guardado correctamente el usuario" })
     } catch (error) {
         console.log(error)
@@ -167,6 +186,6 @@ export const getInfo = async (req: Request, res: Response) => {
         console.log(error)
         res.status(505).json({ info: "Internal error server" })
     }
-}   
+}
 
 
