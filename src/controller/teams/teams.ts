@@ -4,8 +4,8 @@ import { connect } from "../user/user";
 
 export const createTeams = async (req: Request, res: Response) => {
     try {
-        const { id_equipo, nombre_equipo, descripcion, estado } = req.body
-        if (!id_equipo || !nombre_equipo || !estado) {
+        const { id_equipo, nombre, descripcion, estado } = req.body
+        if (!id_equipo || !nombre || !estado) {
             return res.status(422).json({
                 detail: {
                     info: "Unprocessable Content",
@@ -16,7 +16,7 @@ export const createTeams = async (req: Request, res: Response) => {
         }
         const response = await connect.query(`INSERT INTO public.equipos(
             id_equipo, nombre, id_estado, descrip)
-            VALUES ($1, $2, $3, $4);`, [id_equipo, nombre_equipo, estado, descripcion])
+            VALUES ($1, $2, $3, $4);`, [id_equipo, nombre, estado, descripcion])
 
         res.status(201).json({ data: 'El equipo ha sido creado corretamente' })
 
@@ -41,7 +41,3 @@ export const getIdTeam = async () => {
 export const updateTeams = async () => {
 
 }
-//
-// INSERT INTO public.equipos(id_equipo, nombre, id_estado) VALUES (?, ?, ?);
-// UPDATE public.equiposSET id_equipo=?, nombre=?, id_estado=? WHERE <condition>;
-// DELETE FROM public.equipos WHERE <condition>;

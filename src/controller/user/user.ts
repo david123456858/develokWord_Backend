@@ -93,8 +93,11 @@ export const createUser = async (req: Request, res: Response) => {
 export const getAllUser = async (req: Request, res: Response) => {
     try {
         //Ojo que no puedes mandar todos los datos solo los pertinentes como nombres cedula 
-        const response: QueryResult = await connect.query(`SELECT id_usuario, nombre1, nombre2, apellido1 ,apellido2,id_estado 
-        FROM usuarios WHERE usuarios.id_rol = '2' `)
+        const response: QueryResult = await connect.query(`SELECT id_usuario, nombre1, nombre2, apellido1, apellido2, id_estado, correo, roles.nombre
+        FROM usuarios
+        INNER JOIN roles ON usuarios.id_rol = roles.id_rol
+        WHERE usuarios.id_rol = '2'; `)
+        console.log(response.rows)
         res.status(200).json({ data: response.rows })
     } catch (error) {
         console.log(error)
@@ -104,10 +107,10 @@ export const getAllUser = async (req: Request, res: Response) => {
 
 export const updateUserTeams = async (req: Request, res: Response) => {
     try {
-        const { id_user, id_team } = req.body
+        const { id_user, id_equipo } = req.body
         const queryDefault: string = `UPDATE public.usuarios
         SET id_equipo=$2 WHERE usuarios.id_usuario =$1`
-        const response: QueryResult = await connect.query(queryDefault, [id_user, id_team])
+        const response: QueryResult = await connect.query(queryDefault, [id_user, id_equipo])
         res.status(200).json({ data: "Usuario asignado a un grupos" })
         console.log(response)
     } catch (error) {
@@ -118,33 +121,33 @@ export const updateUserTeams = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const id = (req.params.id)
-        const { name1, name2, lastname1, lastname2 } = req.body
+        const id_user = (req.params.id)
+        const { nombre1, nombre2, apellido1, apellido2 } = req.body
         let quer: string = 'UPDATE public.usuarios SET '
         const updateQuery = []
         let index = 1
-        if (name1) {
+        if (nombre1) {
             quer += `nombre1=$${index} ,`
-            updateQuery.push(name1)
+            updateQuery.push(nombre1)
             index++
         }
-        if (name2) {
+        if (nombre2) {
             quer += `nombre2=$${index} ,`
-            updateQuery.push(name2)
+            updateQuery.push(nombre2)
             index++
         }
-        if (lastname1) {
+        if (apellido1) {
             quer += `apellido1=$${index} ,`
-            updateQuery.push(lastname1)
+            updateQuery.push(apellido1)
             index++
         }
-        if (lastname2) {
+        if (apellido2) {
             quer += `apellido2=$${index} ,`
-            updateQuery.push(lastname2)
+            updateQuery.push(apellido2)
             index++
         }
         quer = quer.slice(0, -1)
-        quer += `WHERE id_usuario = '${id}'`
+        quer += `WHERE id_usuario = '${id_user}'`
         console.log(quer)
 
         console.log(updateQuery)
@@ -158,12 +161,12 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const changePassWord = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id
+        const id_user = req.params.id
         const { contra } = req.body
         const pass = await encryptPassWord(contra)
         console.log(pass)
         const queryDefault: string = `UPDATE public.usuarios SET contraseña =$2 WHERE id_usuario = $1`
-        const responde: QueryResult = await connect.query(queryDefault, [id, pass])
+        const responde: QueryResult = await connect.query(queryDefault, [id_user, pass])
         res.status(200).json({ data: "User change succesFully passwords" })
 
     } catch (error) {
