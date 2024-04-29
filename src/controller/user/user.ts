@@ -32,7 +32,7 @@ export const verifyUser = async (req: Request, res: Response) => {
             response = await connect.query(`SELECT id_usuario,nombre1,nombre2,apellido1,apellido2,correo FROM USUARIOS WHERE 
                 usuarios.correo = $1`, [userReq.user])
             res.status(200).json({ info: { data: response.rows, message: "Usuario encontrado" } })
-        }else{
+        } else {
             res.status(404).json({
                 detail: {
                     info: "Not Found",
