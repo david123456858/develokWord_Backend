@@ -96,7 +96,7 @@ export const getAllUser = async (req: Request, res: Response) => {
         const response: QueryResult = await connect.query(`SELECT id_usuario, nombre1, nombre2, apellido1, apellido2, id_estado, correo, roles.nombre
         FROM usuarios
         INNER JOIN roles ON usuarios.id_rol = roles.id_rol
-        WHERE usuarios.id_rol = '2'; `)
+        WHERE usuarios.id_rol = '2'`)
         console.log(response.rows)
         res.status(200).json({ data: response.rows })
     } catch (error) {
