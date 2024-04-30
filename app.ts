@@ -20,7 +20,6 @@ app.use(routeTeams)
 app.use(routerOrders)
 
 app.get("/", (req: Request, res: Response) => {
-    //res.send("Bienvenido a DelevolkWord 2.0 mejorado")
     res.json({ info: "Bienvenido a DelevolkWord 2.0 mejorado" })
 })
 

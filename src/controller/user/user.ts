@@ -15,7 +15,7 @@ export const connect = _db.connectdb()
 
 export const verifyUser = async (req: Request, res: Response) => {
     try {
-        const {correo, contra} = req.body
+        const { correo, contra } = req.body
         let response: QueryResult = await connect.query(`SELECT contraseña FROM USUARIOS WHERE 
         usuarios.correo = $1`, [correo])
         if (response.rowCount === 0) {
@@ -70,7 +70,7 @@ export const createUser = async (req: Request, res: Response) => {
         const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
         const password = await encryptPassWord(contra)
         //console.log(password);
-        console.log("que deberia",id_usuario, nombre1, nombre2, apellido1, correo, contra, rol, estado)
+        console.log("que deberia", id_usuario, nombre1, nombre2, apellido1, correo, contra, rol, estado)
         if (!id_usuario || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
             res.status(422).json({
                 detail: {
@@ -109,8 +109,8 @@ export const updateUserTeams = async (req: Request, res: Response) => {
     try {
         const { id_usuario, id_equipo } = req.body
         console.log(id_usuario, id_equipo)
-        if(!id_usuario || !id_equipo){
-            
+        if (!id_usuario || !id_equipo) {
+
             res.status(422).json({
                 detail: {
                     info: "Unprocessable Content",
@@ -121,7 +121,7 @@ export const updateUserTeams = async (req: Request, res: Response) => {
         }
         const queryDefault: string = `UPDATE public.usuarios
         SET id_equipo=$2 WHERE usuarios.id_usuario =$1`
-        
+
         const response: QueryResult = await connect.query(queryDefault, [id_usuario, id_equipo])
         res.status(200).json({ data: "Usuario asignado a un grupos" })
         console.log(response)

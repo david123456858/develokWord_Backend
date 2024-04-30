@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { userFrom } from "../../helpers/tokensHelpers";
-import { error } from "console";
 
-
+//fuera de servicio por ahora
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 

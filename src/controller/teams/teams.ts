@@ -12,7 +12,7 @@ export const createTeams = async (req: Request, res: Response) => {
                     message: "No se han enviado todos los datos necesarios"
                 }
             })
-            
+
         }
         const response = await connect.query(`INSERT INTO public.equipos(
             id_equipo, nombre, id_estado, descrip)

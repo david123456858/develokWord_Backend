@@ -1,6 +1,6 @@
 import { createToken, createUser, getAllUser, updateUserTeams, verifyUser, updateUser,changePassWord, getInfo } from "../../controller/user/user"
 import { Router } from "express";
-import { checkJwt } from "../../middleware/jwt/userJwt";
+//import { checkJwt } from "../../middleware/jwt/userJwt";
 
 
 const routeBase = '/api/v1/user'
