@@ -15,9 +15,9 @@ export const connect = _db.connectdb()
 
 export const verifyUser = async (req: Request, res: Response) => {
     try {
-        const userReq = req.body
+        const {correo, contra} = req.body
         let response: QueryResult = await connect.query(`SELECT contraseña FROM USUARIOS WHERE 
-        usuarios.correo = $1`, [userReq.user])
+        usuarios.correo = $1`, [correo])
         if (response.rowCount === 0) {
             res.status(404).json({
                 detail: {
@@ -28,10 +28,10 @@ export const verifyUser = async (req: Request, res: Response) => {
             return
         }
         const { contraseña } = response.rows[0]
-        if (await comparePassWord(userReq.passWords, contraseña)) {
+        if (await comparePassWord(contra, contraseña)) {
             response = await connect.query(`SELECT id_usuario,nombre1,nombre2,apellido1,apellido2,correo FROM USUARIOS WHERE 
-                usuarios.correo = $1`, [userReq.user])
-            res.status(200).json({ info: { data: response.rows, message: "Usuario encontrado" } })
+                usuarios.correo = $1`, [correo])
+            res.status(200).json({ info: { data: response.rows, message: "Has iniciado sesión" } })
         } else {
             res.status(404).json({
                 detail: {
@@ -67,11 +67,11 @@ export const createUser = async (req: Request, res: Response) => {
             id_usuario, nombre1, nombre2, apellido1, correo, contraseña, id_rol, id_estado, apellido2)
             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`
         // console.log(req.body)
-        const { id_user, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
+        const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
         const password = await encryptPassWord(contra)
         //console.log(password);
-
-        if (!id_user || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
+        console.log("que deberia",id_usuario, nombre1, nombre2, apellido1, correo, contra, rol, estado)
+        if (!id_usuario || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
             res.status(422).json({
                 detail: {
                     info: "Unprocessable Content",
@@ -81,7 +81,7 @@ export const createUser = async (req: Request, res: Response) => {
             return
         }
         const response: QueryResult = await connect.query(queryDefault,
-            [id_user, nombre1, nombre2 ?? '', apellido1, correo, password, rol, estado, apellido2 ?? ''])
+            [id_usuario, nombre1, nombre2 ?? '', apellido1, correo, password, rol, estado, apellido2 ?? ''])
         console.log(response)
         res.status(201).json({ data: "Se ha guardado correctamente el usuario" })
     } catch (error) {
@@ -107,9 +107,10 @@ export const getAllUser = async (req: Request, res: Response) => {
 
 export const updateUserTeams = async (req: Request, res: Response) => {
     try {
-        const { id_user, id_equipo } = req.body
-        if(!id_user || !id_equipo){
-            console.log(id_user, id_equipo)
+        const { id_usuario, id_equipo } = req.body
+        console.log(id_usuario, id_equipo)
+        if(!id_usuario || !id_equipo){
+            
             res.status(422).json({
                 detail: {
                     info: "Unprocessable Content",
@@ -121,7 +122,7 @@ export const updateUserTeams = async (req: Request, res: Response) => {
         const queryDefault: string = `UPDATE public.usuarios
         SET id_equipo=$2 WHERE usuarios.id_usuario =$1`
         
-        const response: QueryResult = await connect.query(queryDefault, [id_user, id_equipo])
+        const response: QueryResult = await connect.query(queryDefault, [id_usuario, id_equipo])
         res.status(200).json({ data: "Usuario asignado a un grupos" })
         console.log(response)
     } catch (error) {
@@ -132,7 +133,7 @@ export const updateUserTeams = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const id_user = (req.params.id)
+        const id_usuario = (req.params.id)
         const { nombre1, nombre2, apellido1, apellido2 } = req.body
         let quer: string = 'UPDATE public.usuarios SET '
         const updateQuery = []
@@ -158,7 +159,7 @@ export const updateUser = async (req: Request, res: Response) => {
             index++
         }
         quer = quer.slice(0, -1)
-        quer += `WHERE id_usuario = '${id_user}'`
+        quer += `WHERE id_usuario = '${id_usuario}'`
         console.log(quer)
 
         console.log(updateQuery)
@@ -172,12 +173,12 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const changePassWord = async (req: Request, res: Response) => {
     try {
-        const id_user = req.params.id
+        const id_usuario = req.params.id
         const { contra } = req.body
         const pass = await encryptPassWord(contra)
         console.log(pass)
         const queryDefault: string = `UPDATE public.usuarios SET contraseña =$2 WHERE id_usuario = $1`
-        const responde: QueryResult = await connect.query(queryDefault, [id_user, pass])
+        const responde: QueryResult = await connect.query(queryDefault, [id_usuario, pass])
         res.status(200).json({ data: "User change succesFully passwords" })
 
     } catch (error) {
