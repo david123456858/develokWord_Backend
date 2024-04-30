@@ -94,7 +94,7 @@ export const getAllUser = async (req: Request, res: Response) => {
     try {
         //Ojo que no puedes mandar todos los datos solo los pertinentes como nombres cedula 
         const response: QueryResult = await connect.query(`SELECT id_usuario, nombre1, nombre2, apellido1, apellido2, id_estado, correo, roles.nombre
-        FROM usuarios
+         FROM usuarios
         INNER JOIN roles ON usuarios.id_rol = roles.id_rol
         WHERE usuarios.id_rol = '2'`)
         console.log(response.rows)
@@ -108,8 +108,19 @@ export const getAllUser = async (req: Request, res: Response) => {
 export const updateUserTeams = async (req: Request, res: Response) => {
     try {
         const { id_user, id_equipo } = req.body
+        if(!id_user || !id_equipo){
+            console.log(id_user, id_equipo)
+            res.status(422).json({
+                detail: {
+                    info: "Unprocessable Content",
+                    message: "No se han enviado todos los datos necesarios"
+                }
+            })
+            return
+        }
         const queryDefault: string = `UPDATE public.usuarios
         SET id_equipo=$2 WHERE usuarios.id_usuario =$1`
+        
         const response: QueryResult = await connect.query(queryDefault, [id_user, id_equipo])
         res.status(200).json({ data: "Usuario asignado a un grupos" })
         console.log(response)
