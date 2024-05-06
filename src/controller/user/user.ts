@@ -202,5 +202,3 @@ export const getInfo = async (req: Request, res: Response) => {
         res.status(505).json({ info: "Internal error server" })
     }
 }
-
-
