@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan'
+import cors from 'cors'
+import "reflect-metadata"
+
 import routeUser from './src/router/users/user';
 import routeTeams from './src/router/teams/teams';
 import routerOrders from './src/router/orders/orders';
-import cors from 'cors'
 
 const app = express()
 
