@@ -11,8 +11,6 @@ export class employes extends person {
     @Column()
     public contra: string
 
-
-
     constructor(id_user: String, nombre1: string, nombre2: string, apellido1: string, apellido2: string,
         estado: string, rol: string, correo: string, contra: string) {
         super(id_user, nombre1, nombre2, apellido1, apellido2)

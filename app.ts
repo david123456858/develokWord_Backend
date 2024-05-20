@@ -7,6 +7,7 @@ import routeUser from './src/router/users/user';
 import routeTeams from './src/router/teams/teams';
 import routerOrders from './src/router/orders/orders';
 import { db_Connect } from './src/db/db';
+import { error } from 'console';
 
 const app = express()
 
@@ -22,7 +23,10 @@ responseDb.initialize()
     .then(() => {
         console.log("Conexion realizada con la base de datos")
     })
-    
+.catch((error)=>{
+    console.log(error)
+})    
+
 app.disable('x-powered-by')// cabecera que no permite darle a la persona la info de la creacion
 app.use(express.json())
 app.use(morgan('dev'))

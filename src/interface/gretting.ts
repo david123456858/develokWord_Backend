@@ -1,3 +1,0 @@
-interface greting{
-    message:string
-}
