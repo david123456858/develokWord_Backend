@@ -1,21 +1,21 @@
 import { Request, Response } from "express"
-import { order } from "../../interface/order"
+//import { order } from "../../interface/order"
 import { QueryResult } from "pg"
 import { connect } from "../user/user"
 
 export const saveOrders = (req: Request, res: Response) => {
   try {
-    const { idOrder, estado, prioridad, id_Usuario, id_Equipo, description, TimeFinished } = req.body
-    const finishedOrder: order = {
-      idOrder: idOrder,
-      estado,
-      prioridad,
-      id_usuario: id_Usuario,
-      id_equipo: id_Equipo,
-      description: description,
-      timeFinished: TimeFinished,
-    }
-    res.status(200).json(finishedOrder)
+    // const { idOrder, estado, prioridad, id_Usuario, id_Equipo, description, TimeFinished } = req.body
+    // const finishedOrder: order = {
+    //   idOrder: idOrder,
+    //   estado,
+    //   prioridad,
+    //   id_usuario: id_Usuario,
+    //   id_equipo: id_Equipo,
+    //   description: description,
+    //   timeFinished: TimeFinished,
+    // }
+    // res.status(200).json(finishedOrder)
   } catch (error) {
     res.status(500).json({
       data: {
