@@ -1,10 +1,14 @@
-class estados {
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm"
+import { employes } from "./employes"
 
+@Entity()
+export class estados {
+    @PrimaryColumn()
     id_estado: string
+    @Column()
     nombre_estado: string
+    @OneToMany(() => employes, (usuario) => usuario.id_estado)
+    usuario: employes[]
 
-    constructor(id_estado: string, nombre_estado: string) {
-        this.id_estado = id_estado
-        this.nombre_estado = nombre_estado
-    }
+    
 }

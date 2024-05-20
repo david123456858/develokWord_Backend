@@ -1,10 +1,10 @@
-class roles{
-
+import { Column, Entity, PrimaryColumn } from "typeorm"
+@Entity()
+export class roles{
+    @PrimaryColumn()
     id_rol:string
+    @Column()
     nombre_rol:string
 
-    constructor(id_rol:string,nombre_rol:string){
-        this.id_rol = id_rol
-        this.nombre_rol = nombre_rol
-    }
+    
 }
