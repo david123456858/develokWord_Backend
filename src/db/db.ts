@@ -1,6 +1,6 @@
 import { Pool } from 'pg'
 import { config } from 'dotenv'
-
+import { DataSource } from 'typeorm'
 
 
 config()
@@ -20,16 +20,18 @@ export class db_Connect {
     return db_Connect._intance // sigleton 
   }
 
-  public connectdb(): Pool{
+  
+  public connectdb(): DataSource{
     
-    const pool =  new Pool({
-      user:process.env.USER,
+    const appDataSource = new DataSource({
+      type:"postgres",
       host:process.env.HOST,
+      port:5432,
+      username:process.env.USER,
       password:process.env.PASSWORD,
-      database: process.env.DATABASE,
-      port: 5432
-      
+      database:process.env.DATABASE
     })
-    return pool
+    
+    return appDataSource
   }
 }
