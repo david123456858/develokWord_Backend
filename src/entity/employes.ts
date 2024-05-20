@@ -1,5 +1,5 @@
-import { person } from "./person";
-import { User } from "./user";
+import { person } from "../entity/person";
+import { User } from "../entity/user";
 import { Entity,PrimaryGeneratedColumn,Column } from "typeorm";
 export class employes extends person {
     @Column()

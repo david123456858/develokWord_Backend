@@ -2,7 +2,7 @@ import { QueryResult } from "pg";
 import { Request, Response } from "express"
 
 import { tokenSing } from "../../helpers/tokensHelpers"
-import { User } from "../../model/user"
+import { User } from "../../entity/user"
 import { db_Connect } from "../../db/db"
 import { encryptPassWord, comparePassWord } from "../../helpers/encryp"
 

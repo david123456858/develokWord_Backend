@@ -1,7 +1,7 @@
-import { Entity,PrimaryGeneratedColumn,Column } from "typeorm"
+import { Entity,PrimaryColumn,Column } from "typeorm"
 @Entity()
 export abstract class person {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id_user: String
     @Column()
     nombre1: string

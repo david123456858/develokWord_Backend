@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken'
 import { config } from 'dotenv'
-import { User } from '../model/user'
+import { User } from '../entity/user'
 
 
 config()
