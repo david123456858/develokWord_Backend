@@ -1,16 +1,25 @@
 import { person } from "../entity/person";
 import { User } from "../entity/user";
-import { Entity,PrimaryGeneratedColumn,Column, ManyToOne } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn, BaseEntity } from "typeorm";
 import { estados } from "./status";
-export class employes extends person {
+@Entity()
+export class employes extends BaseEntity {
+    @PrimaryColumn()
+    id_usuario: String
     @Column()
-    public id_estado: string
+    nombre1: string
     @Column()
-    public id_rol: string
+    nombre2: string
     @Column()
-    public correo: string
+    apellido1: string
     @Column()
-    public contraseña: string
-    
-    
+    apellido2: string
+    @Column()
+    correo: string
+    @Column()
+    contraseña: string
+    @Column()
+    id_estado: string
+    @Column()
+    id_rol: string
 }
