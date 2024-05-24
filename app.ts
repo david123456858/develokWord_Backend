@@ -6,7 +6,7 @@ import 'reflect-metadata'
 import routeUser from './src/router/users/user'
 import routeTeams from './src/router/teams/teams'
 import routerOrders from './src/router/orders/orders'
-import { db_Connect } from './src/db/db'
+import { Db_Connect } from './src/db/db'
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
@@ -14,7 +14,7 @@ app.use(cors({
   origin: '*'
 }))
 
-export const responseDb = db_Connect.getIntance().connectdb()
+export const responseDb = Db_Connect.getIntance().connectdb()
 
 responseDb.initialize()
   .then(() => {

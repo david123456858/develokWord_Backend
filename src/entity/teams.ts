@@ -8,6 +8,6 @@ export class equipos {
   @Column()
     nombre_equipo: string
 
-  id_estado: strin
+  id_estado: string
   description: string
 }
