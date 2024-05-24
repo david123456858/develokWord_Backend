@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { employes } from './employes'
-@Entity()
+@Entity('roles')
 export class roles {
   @PrimaryColumn()
     id_rol: string
@@ -8,6 +8,7 @@ export class roles {
   @Column()
     nombre_rol: string
 
-  @ManyToOne(type => employes, (usuarios) => usuarios.rol)
+  // Es la relacion que existe le paso la entindad y la columna con la que se va a comunicar
+  @OneToMany(type => employes, (usuarios) => usuarios.rol)
     usuarios: employes[]
 }

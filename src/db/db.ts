@@ -1,7 +1,9 @@
-
 import { config } from 'dotenv'
 import { DataSource } from 'typeorm'
 
+import { employes } from '../entity/employes'
+import { roles } from '../entity/rols'
+import { estados } from '../entity/status'
 config()
 
 export class Db_Connect {
@@ -25,7 +27,7 @@ export class Db_Connect {
       username: process.env.USER,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
-      entities: [],
+      entities: [employes, roles, estados],
       synchronize: true,
       logging: true
     })

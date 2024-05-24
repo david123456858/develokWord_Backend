@@ -1,8 +1,8 @@
 
-import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryColumn, BaseEntity, ManyToOne } from 'typeorm'
 import { estados } from './status'
 import { roles } from './rols'
-@Entity()
+@Entity('empleados')
 export class employes extends BaseEntity {
   @PrimaryColumn()
     id_usuario: String
@@ -25,9 +25,9 @@ export class employes extends BaseEntity {
   @Column()
     contraseña: string
 
-  @OneToMany(type => estados, (estados) => estados.usuario)
+  @ManyToOne(type => estados, (estados) => estados.usuario)
     estado: estados
 
-  @OneToMany(type => roles, (rol) => rol.usuarios)
+  @ManyToOne(type => roles, (rol) => rol.usuarios)
     rol: roles
 }
