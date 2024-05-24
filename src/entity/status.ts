@@ -1,14 +1,15 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm"
-import { employes } from "./employes"
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { employes } from './employes'
 
 @Entity()
 export class estados {
-    @PrimaryColumn()
+  @PrimaryColumn()
     id_estado: string
-    @Column()
-    nombre_estado: string
-    @OneToMany(() => employes, (usuario) => usuario.id_estado)
-    usuario: employes[]
 
-    
+  @Column()
+
+    nombre_estado: string
+
+  @OneToMany(type => employes, (usuario) => usuario.estado)
+    usuario: employes[]// lista de empleados con ese estado
 }

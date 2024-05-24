@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryColumn } from 'typeorm'
 
 @Entity()
 export class equipos {
-    @PrimaryColumn()
+  @PrimaryColumn()
     id_equipo: string
-    @Column()
+
+  @Column()
     nombre_equipo: string
-    id_estado: string
-    @Column()
-    description: string
-    
+
+  id_estado: strin
+  description: string
 }

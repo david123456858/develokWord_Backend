@@ -1,25 +1,33 @@
-import { person } from "../entity/person";
-import { User } from "../entity/user";
-import { Entity, Column, ManyToOne, PrimaryColumn, BaseEntity } from "typeorm";
-import { estados } from "./status";
+
+import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany } from 'typeorm'
+import { estados } from './status'
+import { roles } from './rols'
 @Entity()
 export class employes extends BaseEntity {
-    @PrimaryColumn()
+  @PrimaryColumn()
     id_usuario: String
-    @Column()
+
+  @Column()
     nombre1: string
-    @Column()
+
+  @Column()
     nombre2: string
-    @Column()
+
+  @Column()
     apellido1: string
-    @Column()
+
+  @Column()
     apellido2: string
-    @Column()
+
+  @Column()
     correo: string
-    @Column()
+
+  @Column()
     contraseña: string
-    @Column()
-    id_estado: string
-    @Column()
-    id_rol: string
+
+  @OneToMany(type => estados, (estados) => estados.usuario)
+    estado: estados
+
+  @OneToMany(type => roles, (rol) => rol.usuarios)
+    rol: roles
 }
