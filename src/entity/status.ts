@@ -13,6 +13,6 @@ export class estados {
   @OneToMany(type => employes, (usuario) => usuario.estado)
     usuario: employes[]// lista de empleados con ese estado
 
-  // @OneToMany(type => equipos, (equipo) => equipo.estados)
-  //   equipos: equipos[]
+  @OneToMany(type => equipos, (equipo) => equipo.estados)
+    equipos: equipos[]
 }

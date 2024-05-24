@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
 import { estados } from './status'
+import { employes } from './employes'
 
 @Entity()
 export class equipos {
@@ -12,6 +13,9 @@ export class equipos {
   @Column()
     descripcion: string
 
-  // @ManyToOne(type => estados, (estado) => estado.equipos)
-  //   estados: estados
+  @ManyToOne(type => estados, (estado) => estado.equipos)
+    estados: estados
+
+  @OneToMany(type => employes, (empleado) => empleado.idEquipo)
+    empleado: employes[]
 }
