@@ -9,6 +9,6 @@ export class roles {
     nombre_rol: string
 
   // Es la relacion que existe le paso la entindad y la columna con la que se va a comunicar
-  @OneToMany(type => employes, (usuarios) => usuarios.rol)
+  @OneToMany(type => employes, (usuarios) => usuarios.idRol)
     usuarios: employes[]
 }

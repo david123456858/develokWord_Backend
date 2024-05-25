@@ -27,10 +27,10 @@ export class employes extends BaseEntity {
     contraseña: string
 
   @ManyToOne(type => estados, (estados) => estados.usuario)
-    estado: estados
+    idEstado: estados
 
   @ManyToOne(type => roles, (rol) => rol.usuarios)
-    rol: roles
+    idRol: roles
 
   @ManyToOne(type => equipos, (equipo) => equipo.empleado)
     idEquipo: equipos

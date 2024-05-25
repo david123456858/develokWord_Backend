@@ -5,6 +5,7 @@ import { tokenSing } from '../../helpers/tokensHelpers'
 import { User } from '../../entity/user'
 import { Db_Connect } from '../../db/db'
 import { encryptPassWord, comparePassWord } from '../../helpers/encryp'
+import { employes } from '../../entity/employes'
 
 // verificar usuario
 
@@ -61,15 +62,13 @@ export const createToken = async (req: Request, res: Response): Promise<void> =>
 
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const queryDefault: string = `INSERT INTO usuarios(
-            idUsuario, nombre1, nombre2, apellido1, correo, contraseña, id_rol, id_estado, apellido2)
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`
-    // console.log(req.body)
     const { idUsuario, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
+    const user = new employes()
+    user.id_usuario = idUsuario
+    user.nombre1 = nombre1
+    user.nombre2 = nombre2
     const password = await encryptPassWord(contra)
-    // console.log(password);
-    console.log('que deberia', idUsuario, nombre1, nombre2, apellido1, correo, contra, rol, estado)
-    if (!idUsuario || !nombre1 || !apellido1 || !correo || !contra || !rol || !estado) {
+    if (idUsuario === null || nombre1 === null || apellido1 === null || correo === null || contra === null || rol === null || estado === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',

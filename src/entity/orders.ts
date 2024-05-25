@@ -14,6 +14,7 @@ export class ordenes {
   @CreateDateColumn()
     fecha_finalizacion: Date
 
+  // Fecha de inicio
   // llaves foreaneas
   id_prioridad: string
   id_equipo: string

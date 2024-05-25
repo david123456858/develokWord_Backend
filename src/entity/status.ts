@@ -10,7 +10,7 @@ export class estados {
   @Column()
     nombre_estado: string
 
-  @OneToMany(type => employes, (usuario) => usuario.estado)
+  @OneToMany(type => employes, (usuario) => usuario.idEstado)
     usuario: employes[]// lista de empleados con ese estado
 
   @OneToMany(type => equipos, (equipo) => equipo.estados)

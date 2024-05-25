@@ -1,7 +1,7 @@
-import { Router } from "express";
-import { createTeams, getAll } from "../../controller/teams/teams";
+import { Router } from 'express'
+import { createTeams, getAll } from '../../controller/teams/teams'
 
-const routeBaseTeams: String = '/api/v1/teams'
+const routeBaseTeams: string = '/api/v1/teams'
 
 const routeTeams = Router()
 
