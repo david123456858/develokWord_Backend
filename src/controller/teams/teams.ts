@@ -10,7 +10,6 @@ export const createTeams = async (req: Request, res: Response): Promise<void> =>
     equipo.nombre_equipo = nombre
     equipo.estados = estado
     equipo.descripcion = descripcion
-    console.log(equipo)
     if (idEquipo === null || nombre === null || estado === null) {
       res.status(422).json({
         detail: {

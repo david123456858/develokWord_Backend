@@ -24,7 +24,7 @@ export class employes extends BaseEntity {
     correo: string
 
   @Column()
-    contraseña: string
+    contrasena: string
 
   @ManyToOne(type => estados, (estados) => estados.usuario)
     idEstado: estados
