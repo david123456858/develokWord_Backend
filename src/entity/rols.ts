@@ -1,7 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { employes } from './employes'
 @Entity('roles')
-export class roles {
+export class roles extends BaseEntity {
   @PrimaryColumn()
     id_rol: string
 

@@ -5,6 +5,8 @@ import { User } from '../../entity/user'
 import { encryptPassWord, comparePassWord } from '../../helpers/encryp'
 import { employes } from '../../entity/employes'
 import { equipos } from '../../entity/teams'
+import { estados } from '../../entity/status'
+import { roles } from '../../entity/rols'
 // import { employes } from '../../entity/employes'
 
 // verificar usuario
@@ -179,12 +181,12 @@ export const changePassWord = async (req: Request, res: Response): Promise<void>
 
 export const getInfo = async (res: Response): Promise<void> => {
   try {
-    const responseR: QueryResult = await connect.query('SELECT * FROM roles')
-    const responseE: QueryResult = await connect.query('SELECT * FROM estados')
+    const responseR = await estados.find()
+    const responseE = await roles.find()
     res.status(200).json({
       data: {
-        roles: responseR.rows,
-        estados: responseE.rows
+        roles: responseR,
+        estados: responseE
       }
     })
   } catch (error) {

@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { employes } from './employes'
 import { equipos } from './teams'
 
 @Entity('estados')
-export class estados {
+export class estados extends BaseEntity {
   @PrimaryColumn()
     id_estado: string
 

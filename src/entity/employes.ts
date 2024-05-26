@@ -1,10 +1,10 @@
 
-import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm'
+import { Entity, Column, PrimaryColumn, ManyToOne, BaseEntity } from 'typeorm'
 import { estados } from './status'
 import { roles } from './rols'
 import { equipos } from './teams'
 @Entity('empleados')
-export class employes {
+export class employes extends BaseEntity {
   @PrimaryColumn()
     id_usuario: String
 
