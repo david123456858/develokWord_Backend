@@ -6,6 +6,8 @@ import { User } from '../../entity/user'
 import { Db_Connect } from '../../db/db'
 import { encryptPassWord, comparePassWord } from '../../helpers/encryp'
 import { employes } from '../../entity/employes'
+import { equipos } from '../../entity/teams'
+// import { employes } from '../../entity/employes'
 
 // verificar usuario
 
@@ -64,10 +66,17 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
   try {
     const { idUsuario, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
     const user = new employes()
+    const password = await encryptPassWord(contra)
     user.id_usuario = idUsuario
     user.nombre1 = nombre1
     user.nombre2 = nombre2
-    const password = await encryptPassWord(contra)
+    user.apellido1 = apellido1
+    user.apellido2 = apellido2
+    user.correo = correo
+    user.idRol = rol
+    user.idEstado = estado
+    user.contraseña = password
+    console.log(user)
     if (idUsuario === null || nombre1 === null || apellido1 === null || correo === null || contra === null || rol === null || estado === null) {
       res.status(422).json({
         detail: {
@@ -77,9 +86,6 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
       })
       return
     }
-    const response: QueryResult = await connect.query(queryDefault,
-      [idUsuario, nombre1, nombre2 ?? '', apellido1, correo, password, rol, estado, apellido2 ?? ''])
-    console.log(response)
     res.status(201).json({ data: 'Se ha guardado correctamente el usuario' })
   } catch (error) {
     console.log(error)
@@ -89,13 +95,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 
 export const getAllUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Ojo que no puedes mandar todos los datos solo los pertinentes como nombres cedula
-    const response: QueryResult = await connect.query(`SELECT idUsuario, nombre1, nombre2, apellido1, apellido2, id_estado, correo, roles.nombre
-         FROM usuarios
-        INNER JOIN roles ON usuarios.id_rol = roles.id_rol
-        WHERE usuarios.id_rol = '2'`)
-    console.log(response.rows)
-    res.status(200).json({ data: response.rows })
+    res.status(200).json({ })
   } catch (error) {
     console.log(error)
     res.status(505).json({ info: 'Internal error server' })
@@ -106,7 +106,7 @@ export const updateUserTeams = async (req: Request, res: Response): Promise<void
   try {
     const { idUsuario, idEquipo } = req.body
     console.log(idUsuario, idEquipo)
-    if (!idUsuario || !idEquipo) {
+    if (idUsuario === null || idEquipo === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',

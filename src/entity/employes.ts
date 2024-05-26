@@ -1,10 +1,10 @@
 
-import { Entity, Column, PrimaryColumn, BaseEntity, ManyToOne } from 'typeorm'
+import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm'
 import { estados } from './status'
 import { roles } from './rols'
 import { equipos } from './teams'
 @Entity('empleados')
-export class employes extends BaseEntity {
+export class employes {
   @PrimaryColumn()
     id_usuario: String
 
@@ -32,6 +32,6 @@ export class employes extends BaseEntity {
   @ManyToOne(type => roles, (rol) => rol.usuarios)
     idRol: roles
 
-  @ManyToOne(type => equipos, (equipo) => equipo.empleado)
+  @ManyToOne(type => equipos, (equipo) => equipo.empleado, { nullable: true })
     idEquipo: equipos
 }
