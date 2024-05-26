@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 
-import { connect } from '../user/user'
 import { equipos } from '../../entity/teams'
-import { User } from '../../entity/user'
 
 export const createTeams = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -31,16 +29,39 @@ export const createTeams = async (req: Request, res: Response): Promise<void> =>
 }
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    const reponse = await equipos.find()
+    const reponse = await equipos.find({
+      relations: {
+        estados: true
+      }
+    })
     res.status(200).json({ data: reponse })
   } catch (error) {
     console.log(error)
     res.status(500).json({ data: 'Internal server Error' })
   }
 }
-export const getIdTeam = async () => {
-
+export const getIdTeam = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = req.params.id
+    const idS = id.toString()
+    console.log(idS)
+    const reponse = await equipos.findOne({
+      where: {
+        id_equipo: idS
+      },
+      relations: {
+        estados: true
+      }
+    })
+    if (reponse === null) {
+      res.status(404).json({ error: 'No fue encontrado' })
+    }
+    res.status(200).json({ data: reponse })
+  } catch (error) {
+    res.status(500).json({ data: 'Internal server Error' })
+    console.log(error)
+  }
 }
-export const updateTeams = async () => {
+// export const updateTeams = async () => {
 
-}
+// }
