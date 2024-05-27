@@ -10,36 +10,32 @@ import { User } from '../../entity/user'
 // verificar usuario
 
 export const verifyUser = async (req: Request, res: Response): Promise<void> => {
-  // try {
-  //   const { correo, contra } = req.body
-  //   let response = await connect.query(`SELECT contraseña FROM USUARIOS WHERE
-  //       usuarios.correo = $1`, [correo])
-  //   if (response.rowCount === 0) {
-  //     res.status(404).json({
-  //       detail: {
-  //         info: 'Not Found',
-  //         message: 'Usuario no encontrado'
-  //       }
-  //     })
-  //     return
-  //   }
-  //   const { contraseña } = response.rows[0]
-  //   if (await comparePassWord(contra, contraseña)) {
-  //     response = await connect.query(`SELECT idUsuario,nombre1,nombre2,apellido1,apellido2,correo FROM USUARIOS WHERE
-  //               usuarios.correo = $1`, [correo])
-  //     res.status(200).json({ info: { data: response.rows, message: 'Has iniciado sesión' } })
-  //   } else {
-  //     res.status(404).json({
-  //       detail: {
-  //         info: 'Not Found',
-  //         message: 'Mala contraseña'
-  //       }
-  //     })
-  //   }
-  // } catch (error) {
-  //   res.status(505).json({ info: 'Error internal Server' })
-  //   console.log(error)
-  // }
+  try {
+    const { correo, contra } = req.body
+    const responseC = await employes.findOne({
+      where: { correo },
+      select: ['contrasena']
+    })
+    const contrase = responseC?.contrasena as string
+    if (responseC === null) {
+      res.status(404).json({ detail: 'Not Found user' })
+    }
+    if (await comparePassWord(contra, contrase)) {
+      const response = await employes.findOne({
+        where: { correo },
+        select: ['nombre1', 'nombre2', 'apellido1', 'apellido2', 'correo'],
+        relations: {
+          idEstado: true
+        }
+      })
+      res.status(200).json({ info: { data: response, message: 'Has iniciado sesión' } })
+    } else {
+      res.status(404).json({ detail: 'Contraseña o usuario incorrecto' })
+    }
+  } catch (error) {
+    res.status(505).json({ info: 'Error internal Server' })
+    console.log(error)
+  }
 }
 
 export const createUser = async (req: Request, res: Response): Promise<void> => {

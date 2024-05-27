@@ -8,7 +8,7 @@ export const createToken = async (req: Request, res: Response): Promise<void> =>
     const users = 'LaurAltahona@gmail.com'
     const user: User = {
       user: users,
-      passWords: 'Berlin12345'
+      rol: 'administrador'
     }
     const token = await tokenSing(user)
     res.status(200).json({ info: { data: token, message: 'Token Creado' } })

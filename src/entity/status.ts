@@ -11,7 +11,7 @@ export class estados extends BaseEntity {
     nombre_estado: string
 
   @OneToMany(type => employes, (usuario) => usuario.idEstado)
-    usuario: employes[]// lista de empleados con ese estado
+    id_usuario: employes[]// lista de empleados con ese estado
 
   @OneToMany(type => equipos, (equipo) => equipo.estados)
     equipos: equipos[]
