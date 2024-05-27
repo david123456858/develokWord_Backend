@@ -1,9 +1,9 @@
 export class User {
   user: String
-  passWords: String
+  rol: String
 
   constructor (user: String, passWords: String) {
     this.user = user
-    this.passWords = passWords
+    this.rol = passWords
   }
 }
