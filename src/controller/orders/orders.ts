@@ -37,4 +37,3 @@ export const getPrioridades = async (req: Request, res: Response): Promise<void>
   //   })
   // }
 }
-// INSERT INTO public.prioridades(id_prioridad, nombre)VALUES ('2', 'media');

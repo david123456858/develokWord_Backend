@@ -5,6 +5,8 @@ import { employes } from '../entity/employes'
 import { roles } from '../entity/rols'
 import { estados } from '../entity/status'
 import { equipos } from '../entity/teams'
+import { ordenes } from '../entity/orders'
+import { prioridades } from '../entity/priority'
 config()
 
 export class Db_Connect {
@@ -28,7 +30,7 @@ export class Db_Connect {
       username: process.env.USER,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
-      entities: [employes, roles, estados, equipos],
+      entities: [employes, roles, estados, equipos, ordenes, prioridades],
       synchronize: true,
       logging: true
     })

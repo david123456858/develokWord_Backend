@@ -109,15 +109,6 @@ export const updateUserTeams = async (req: Request, res: Response): Promise<void
     res.status(505).json({ info: 'Internal error server' })
   }
 }
-export const updateUser = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { nombre1, nombre2, apellido1, apellido2 } = req.body
-    res.status(202).json({ data: 'update user succeFully' })
-  } catch (error) {
-    console.log(error)
-    res.status(505).json({ info: 'Internal error server' })
-  }
-}
 export const changePassWord = async (req: Request, res: Response): Promise<void> => {
   try {
     const { contra } = req.body

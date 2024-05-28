@@ -1,7 +1,9 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
+import { prioridades } from './priority'
+import { equipos } from './teams'
 
 @Entity()
-export class ordenes {
+export class ordenes extends BaseEntity {
   @PrimaryColumn()
     id_orden: string
 
@@ -11,11 +13,12 @@ export class ordenes {
   @Column()
     nombre_usuario: string
 
-  @CreateDateColumn()
+  @Column()
     fecha_finalizacion: Date
 
-  // Fecha de inicio
-  // llaves foreaneas
-  id_prioridad: string
-  id_equipo: string
+  // @ManyToOne(type => prioridades, (prioridad) => prioridad.orden)
+  //   prioridad: prioridades
+
+  @ManyToOne(type => equipos, (equipo) => equipo.orden)
+    equipo: equipos
 }

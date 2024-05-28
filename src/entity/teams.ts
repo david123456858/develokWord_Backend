@@ -1,6 +1,7 @@
 import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
 import { estados } from './status'
 import { employes } from './employes'
+import { ordenes } from './orders'
 
 @Entity()
 export class equipos extends BaseEntity {
@@ -18,4 +19,7 @@ export class equipos extends BaseEntity {
 
   @OneToMany(type => employes, (empleado) => empleado.idEquipo)
     empleado: employes[]
+
+  @OneToMany(type => ordenes, (orden) => orden.equipo)
+    orden: ordenes[]
 }
