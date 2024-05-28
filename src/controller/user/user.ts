@@ -5,6 +5,7 @@ import { employes } from '../../entity/employes'
 import { estados } from '../../entity/status'
 import { roles } from '../../entity/rols'
 import { User } from '../../entity/user'
+import { tokenSing } from '../../helpers/tokensHelpers'
 // import { employes } from '../../entity/employes'
 
 // verificar usuario
@@ -20,15 +21,23 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
     if (responseC === null) {
       res.status(404).json({ detail: 'Not Found user' })
     }
+    console.log(await comparePassWord(contra, contrase))
     if (await comparePassWord(contra, contrase)) {
       const response = await employes.findOne({
         where: { correo },
-        select: ['nombre1', 'nombre2', 'apellido1', 'apellido2', 'correo'],
+        select: ['id_usuario', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'correo', 'idEquipo', 'idRol', 'idEstado'],
         relations: {
-          idEstado: true
+          idEstado: true,
+          idRol: true,
+          idEquipo: true
         }
       })
-      res.status(200).json({ info: { data: response, message: 'Has iniciado sesión' } })
+      const user: User = {
+        user: response?.correo as string,
+        rol: response?.idRol.nombre_rol as string
+      }
+      const tokenS = await tokenSing(user)
+      res.status(200).json({ info: { data: response, token: tokenS, message: 'Has iniciado sesión' } })
     } else {
       res.status(404).json({ detail: 'Contraseña o usuario incorrecto' })
     }
@@ -42,7 +51,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
   try {
     const { idUsuario, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
     const user = new employes()
-    const password = await encryptPassWord(contra)
+    const password = await encryptPassWord(contra) as string
     user.id_usuario = idUsuario
     user.nombre1 = nombre1
     user.nombre2 = nombre2
@@ -86,26 +95,26 @@ export const getAllUser = async (req: Request, res: Response): Promise<void> => 
 }
 
 export const updateUserTeams = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { idUsuario, idEquipo } = req.body
-    console.log(idUsuario, idEquipo)
-    if (idUsuario === null || idEquipo === null) {
-      res.status(422).json({
-        detail: {
-          info: 'Unprocessable Content',
-          message: 'No se han enviado todos los datos necesarios'
-        }
-      })
-      return
-    }
-    const queryDefault: string = `UPDATE public.usuarios
-        SET idEquipo=$2 WHERE usuarios.idUsuario =$1`
+  // try {
+  //   const { idUsuario, idEquipo } = req.body
+  //   console.log(idUsuario, idEquipo)
+  //   if (idUsuario === null || idEquipo === null) {
+  //     res.status(422).json({
+  //       detail: {
+  //         info: 'Unprocessable Content',
+  //         message: 'No se han enviado todos los datos necesarios'
+  //       }
+  //     })
+  //     return
+  //   }
+  //   const queryDefault: string = `UPDATE public.usuarios
+  //       SET idEquipo=$2 WHERE usuarios.idUsuario =$1`
 
-    res.status(200).json({ data: 'Usuario asignado a un grupos' })
-  } catch (error) {
-    console.log(error)
-    res.status(505).json({ info: 'Internal error server' })
-  }
+  //   res.status(200).json({ data: 'Usuario asignado a un grupos' })
+  // } catch (error) {
+  //   console.log(error)
+  //   res.status(505).json({ info: 'Internal error server' })
+  // }
 }
 
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
@@ -150,10 +159,15 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
 
 export const changePassWord = async (req: Request, res: Response): Promise<void> => {
   try {
-    const idUsuario = req.params.id
     const { contra } = req.body
-    const pass = await encryptPassWord(contra)
-    console.log(pass)
+    const contrasena = await encryptPassWord(contra) as string
+    const user = await employes.findOneBy({ id_usuario: req.params.id })
+    if (user === null) {
+      res.status(404).json({ message: 'User does dont exist' })
+      return
+    }
+    user.contrasena = contrasena
+    await user.save()
     res.status(200).json({ data: 'User change succesFully passwords' })
   } catch (error) {
     console.log(error)
