@@ -1,6 +1,7 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
 import { prioridades } from './priority'
 import { equipos } from './teams'
+import { employes } from './employes'
 
 @Entity()
 export class ordenes extends BaseEntity {
@@ -11,14 +12,17 @@ export class ordenes extends BaseEntity {
     comentarios: string
 
   @Column()
-    nombre_usuario: string
+    fecha_inicio: Date
 
   @Column()
     fecha_finalizacion: Date
 
-  // @ManyToOne(type => prioridades, (prioridad) => prioridad.orden)
-  //   prioridad: prioridades
+  @ManyToOne(type => employes, (empleado) => empleado)
+    usuario: employes
 
   @ManyToOne(type => equipos, (equipo) => equipo.orden)
     equipo: equipos
+
+  @ManyToOne(type => prioridades, (prioridades) => prioridades.ordenes)
+    prioridades: prioridades
 }

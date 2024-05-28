@@ -30,7 +30,7 @@ export class Db_Connect {
       username: process.env.USER,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
-      entities: [employes, roles, estados, equipos, ordenes, prioridades],
+      entities: [employes, roles, estados, equipos, prioridades, ordenes],
       synchronize: true,
       logging: true
     })

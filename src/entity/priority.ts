@@ -1,6 +1,6 @@
-import { BaseEntity, Column, OneToMany, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { ordenes } from './orders'
-
+@Entity()
 export class prioridades extends BaseEntity {
   @PrimaryColumn()
     id_proridades: string
@@ -8,6 +8,6 @@ export class prioridades extends BaseEntity {
   @Column()
     nombre_prioridad: string
 
-//   @OneToMany(type => ordenes, (ordenes) => ordenes.prioridad)
-//     orden: ordenes[]
+  @OneToMany(type => ordenes, (orden) => orden.prioridades)
+    ordenes: ordenes
 }
