@@ -12,7 +12,7 @@ export class equipos extends BaseEntity {
     nombre_equipo: string
 
   @Column()
-    descripcion: string
+    NumIntegrantes: string
 
   @ManyToOne(type => estados, (estado) => estado.equipos)
     estados: estados

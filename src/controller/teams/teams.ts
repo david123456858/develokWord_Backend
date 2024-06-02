@@ -4,12 +4,12 @@ import { equipos } from '../../entity/teams'
 
 export const createTeams = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { idEquipo, nombre, descripcion, estado } = req.body
+    const { idEquipo, nombre, intg, estado } = req.body
     const equipo = new equipos()
     equipo.id_equipo = idEquipo
     equipo.nombre_equipo = nombre
     equipo.estados = estado
-    equipo.descripcion = descripcion
+    equipo.NumIntegrantes = intg
     if (idEquipo === null || nombre === null || estado === null) {
       res.status(422).json({
         detail: {
@@ -58,6 +58,24 @@ export const getIdTeam = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({ data: reponse })
   } catch (error) {
     res.status(500).json({ data: 'Internal server Error' })
+    console.log(error)
+  }
+}
+export const getId = async (id: string): Promise<equipos | undefined> => {
+  try {
+    const reponse = await equipos.findOne({
+      where: {
+        id_equipo: id
+      },
+      relations: {
+        estados: true
+      }
+    })
+    if (reponse !== null) {
+      return reponse
+    }
+    return undefined
+  } catch (error) {
     console.log(error)
   }
 }

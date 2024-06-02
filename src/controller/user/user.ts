@@ -6,6 +6,7 @@ import { estados } from '../../entity/status'
 import { roles } from '../../entity/rols'
 import { User } from '../../entity/user'
 import { tokenSing } from '../../helpers/tokensHelpers'
+import { getId } from '../teams/teams'
 // import { employes } from '../../entity/employes'
 
 export const verifyUser = async (req: Request, res: Response): Promise<void> => {
@@ -96,14 +97,25 @@ export const updateUserTeams = async (req: Request, res: Response): Promise<void
       res.status(422).json({ message: 'No se han enviado todos los datos necesarios' })
       return
     }
-    const user = await employes.findOneBy({ id_usuario: idUsuario })
-    if (user === null) {
-      res.status(404).json({ message: 'User does dont exist' })
+    const cont = await employes.countBy({ idEquipo })
+    const contT = await getId(idEquipo)
+    if (contT === undefined) {
+      res.json({ data: 'No se encontro' })
       return
     }
-    user.idEquipo = idEquipo
-    await user.save()
-    res.status(200).json({ data: 'Usuario asignado a un grupos' })
+    const num = parseInt(contT.NumIntegrantes)
+    if (cont < num) {
+      const user = await employes.findOneBy({ id_usuario: idUsuario })
+      if (user === null) {
+        res.status(404).json({ message: 'User does dont exist' })
+        return
+      }
+      user.idEquipo = idEquipo
+      await user.save()
+      res.status(200).json({ data: 'Usuario asignado a un grupos' })
+    } else {
+      res.status(404).json({ data: 'Maximo de integrantes' })
+    }
   } catch (error) {
     console.log(error)
     res.status(505).json({ info: 'Internal error server' })
