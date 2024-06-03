@@ -26,7 +26,7 @@ export class Db_Connect {
     const appDataSource = new DataSource({
       type: 'postgres',
       host: process.env.HOST,
-      port: 5432,
+      port: 41260,
       username: process.env.USER,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
