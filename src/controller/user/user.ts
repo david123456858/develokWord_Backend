@@ -47,19 +47,20 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
 }
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { idUsuario, nombre1, nombre2, apellido1, apellido2, correo, contra, rol, estado } = req.body
+    const { idUsuario, nombre1, nombre2, apellido1, apellido2, correo, contrasena, idRol, idEstado, idEquipo } = req.body
     const user = new employes()
-    const password = await encryptPassWord(contra) as string
+    const password = await encryptPassWord(contrasena) as string
     user.id_usuario = idUsuario
     user.nombre1 = nombre1
     user.nombre2 = nombre2
     user.apellido1 = apellido1
     user.apellido2 = apellido2
     user.correo = correo
-    user.idRol = rol
-    user.idEstado = estado
+    user.idRol = idRol
+    user.idEstado = idEstado
     user.contrasena = password
-    if (idUsuario === null || nombre1 === null || apellido1 === null || correo === null || contra === null || rol === null || estado === null) {
+    user.idEquipo = idEquipo
+    if (idUsuario === null || nombre1 === null || apellido1 === null || correo === null || contrasena === null || idRol === null || idEstado === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',
@@ -153,3 +154,19 @@ export const getInfo = async (req: Request, res: Response): Promise<void> => {
     res.status(505).json({ info: 'Internal error server' })
   }
 }
+// export const contIntegrate = async (idEquipo: string, idUsuario: string): Promise<boolean | undefined > => {
+//   try {
+//     if (idUsuario === null || idEquipo === null) {
+//       console.log('No se han enviado todos los datos necesarios')
+//       return
+//     }
+//     const cont = await employes.countBy({ idEquipo })
+//     const contT = await getId(idEquipo)
+//     if (contT === undefined) {
+//       return
+//     }
+//     return true
+//   } catch (error) {
+
+//   }
+// }

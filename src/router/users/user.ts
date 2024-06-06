@@ -10,7 +10,7 @@ routeUser.get(`${routeBase}/getAtri`, getInfo)
 routeUser.post(`${routeBase}`, createUser)// crear usuario
 routeUser.get(`${routeBase}/login`, verifyUser)// loggearte
 routeUser.get(`${routeBase}/create`, createToken)// ESTO NO TE IMPORTA SAPO
-routeUser.get(`${routeBase}/getUsers`, getAllUser)//
+routeUser.get(`${routeBase}/getUsers`, getAllUser)// trae a todo los mmguevo
 routeUser.put(`${routeBase}/updateTeams`, updateUserTeams)
 routeUser.put(`${routeBase}/newPass/:id`, changePassWord)
 

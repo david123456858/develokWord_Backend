@@ -4,13 +4,13 @@ import { equipos } from '../../entity/teams'
 
 export const createTeams = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { idEquipo, nombre, intg, estado } = req.body
+    const { idEquipo, nombreEquipo, NumIntegrantes, idEstado } = req.body
     const equipo = new equipos()
     equipo.id_equipo = idEquipo
-    equipo.nombre_equipo = nombre
-    equipo.estados = estado
-    equipo.NumIntegrantes = intg
-    if (idEquipo === null || nombre === null || estado === null) {
+    equipo.nombre_equipo = nombreEquipo
+    equipo.estados = idEstado
+    equipo.NumIntegrantes = NumIntegrantes
+    if (idEquipo === null || nombreEquipo === null || idEstado === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',
@@ -79,6 +79,7 @@ export const getId = async (id: string): Promise<equipos | undefined> => {
     console.log(error)
   }
 }
+
 // export const updateTeams = async () => {
 
 // }
