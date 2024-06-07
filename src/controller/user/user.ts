@@ -24,7 +24,7 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
     if (await comparePassWord(contrasena, contrasenase)) {
       const response = await employes.findOne({
         where: { correo },
-        select: ['id_usuario', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'correo', 'id_equipo', 'idRol', 'idEstado'],
+        select: ['id_usuario', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'correo', 'idEquipo', 'idRol', 'idEstado'],
         relations: {
           idEstado: true,
           idRol: true,
@@ -47,9 +47,9 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
 }
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contrasenasena, idRol, idEstado, id_equipo } = req.body
+    const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contrasena, idRol, idEstado, id_equipo } = req.body
     const user = new employes()
-    const password = await encryptPassWord(contrasenasena) as string
+    const password = await encryptPassWord(contrasena) as string
     user.id_usuario = id_usuario
     user.nombre1 = nombre1
     user.nombre2 = nombre2
@@ -60,7 +60,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     user.idEstado = idEstado
     user.contrasena = password
     user.idEquipo = id_equipo
-    if (id_usuario === null || nombre1 === null || apellido1 === null || correo === null || contrasenasena === null || idRol === null || idEstado === null) {
+    if (id_usuario === null || nombre1 === null || apellido1 === null || correo === null || contrasena === null || idRol === null || idEstado === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',
@@ -125,13 +125,13 @@ export const updateUserTeams = async (req: Request, res: Response): Promise<void
 export const changePassWord = async (req: Request, res: Response): Promise<void> => {
   try {
     const { contrasena } = req.body
-    const contrasenasena = await encryptPassWord(contrasena) as string
+    const contra = await encryptPassWord(contrasena) as string
     const user = await employes.findOneBy({ id_usuario: req.params.id })
     if (user === null) {
       res.status(404).json({ message: 'User does dont exist' })
       return
     }
-    user.contrasena = contrasenasena
+    user.contrasena = contra
     await user.save()
     res.status(200).json({ data: 'User change succesFully passwords' })
   } catch (error) {
