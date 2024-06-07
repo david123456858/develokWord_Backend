@@ -6,6 +6,7 @@ export const createTeams = async (req: Request, res: Response): Promise<void> =>
   try {
     const { idEquipo, nombreEquipo, NumIntegrantes, idEstado } = req.body
     const equipo = new equipos()
+    console.log(idEquipo)
     equipo.id_equipo = idEquipo
     equipo.nombre_equipo = nombreEquipo
     equipo.estados = idEstado
