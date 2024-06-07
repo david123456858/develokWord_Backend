@@ -4,14 +4,14 @@ import { equipos } from '../../entity/teams'
 
 export const createTeams = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { idEquipo, nombreEquipo, NumIntegrantes, idEstado } = req.body
+    const { id_equipo, nombre_equipo, NumIntegrantes, estados } = req.body
     const equipo = new equipos()
-    console.log(idEquipo)
-    equipo.id_equipo = idEquipo
-    equipo.nombre_equipo = nombreEquipo
-    equipo.estados = idEstado
+    console.log(id_equipo)
+    equipo.id_equipo = id_equipo
+    equipo.nombre_equipo = nombre_equipo
+    equipo.estados = estados
     equipo.NumIntegrantes = NumIntegrantes
-    if (idEquipo === null || nombreEquipo === null || idEstado === null) {
+    if (id_equipo === null || nombre_equipo === null || estados === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',
