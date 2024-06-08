@@ -47,7 +47,7 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
 }
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contrasena, idRol, idEstado, id_equipo } = req.body
+    const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contrasena, idRol, idEstado, idEquipo } = req.body
     const user = new employes()
     const password = await encryptPassWord(contrasena) as string
     user.id_usuario = id_usuario
@@ -59,7 +59,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     user.idRol = idRol
     user.idEstado = idEstado
     user.contrasena = password
-    user.idEquipo = id_equipo
+    user.idEquipo = idEquipo
     if (id_usuario === null || nombre1 === null || apellido1 === null || correo === null || contrasena === null || idRol === null || idEstado === null) {
       res.status(422).json({
         detail: {
