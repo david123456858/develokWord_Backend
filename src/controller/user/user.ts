@@ -162,11 +162,22 @@ export const getInfo = async (req: Request, res: Response): Promise<void> => {
 }
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contrasena, idEstado, idEquipo } = req.body
+    const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, idEstado, idEquipo } = req.body
     const responseEmpleados = await employes.findOne({ where: { id_usuario } })
     if (responseEmpleados === null) {
       res.status(404).json({ data: 'empleado not found' })
+      return
     }
+    responseEmpleados.id_usuario = id_usuario
+    responseEmpleados.nombre1 = nombre1
+    responseEmpleados.nombre2 = nombre2
+    responseEmpleados.apellido1 = apellido1
+    responseEmpleados.apellido2 = apellido2
+    responseEmpleados.correo = correo
+    responseEmpleados.idEquipo = idEquipo
+    responseEmpleados.idEstado = idEstado
+    await responseEmpleados.save()
+    res.status(200).json({ data: 'Se actualizo correctamente el usuario' })
   } catch (error) {
     console.log(error)
     res.status(505).json({ info: 'Internal error server' })
