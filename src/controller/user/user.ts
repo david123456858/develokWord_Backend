@@ -22,7 +22,7 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
     }
     console.log(await comparePassWord(contrasena, contrasenase))
     if (await comparePassWord(contrasena, contrasenase)) {
-      const response = await employes.findOne({
+      const data: employes | null = await employes.findOne({
         where: { correo },
         select: ['id_usuario', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'correo', 'idEquipo', 'idRol', 'idEstado'],
         relations: {
@@ -32,11 +32,12 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
         }
       })
       const user: User = {
-        user: response?.correo as string,
-        rol: response?.idRol.nombre_rol as string
+        user: data?.correo as string,
+        rol: data?.idRol.nombre_rol as string
       }
+      console.log(data?.id_usuario)
       const tokenS = await tokenSing(user)
-      res.status(200).json({ info: { data: response, token: tokenS, message: 'Has iniciado sesión' } })
+      res.status(200).json({ info: { data, token: tokenS, message: 'Has iniciado sesión' } })
     } else {
       res.status(404).json({ detail: 'Contrasenaseña o usuario incorrecto' })
     }
@@ -94,16 +95,20 @@ export const getAllUser = async (req: Request, res: Response): Promise<void> => 
 export const updateUserTeams = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id_usuario, id_equipo } = req.body
+    console.log(id_equipo, id_usuario)
+
     if (id_usuario === null || id_equipo === null) {
       res.status(422).json({ message: 'No se han enviado todos los datos necesarios' })
       return
     }
-    const cont = await employes.countBy({ idEquipo: id_equipo })
+    const cont: number = await employes.count({ where: { idEquipo: id_equipo } })
+    console.log(cont)
     const contT = await getId(id_equipo)
     if (contT === undefined) {
       res.json({ data: 'No se encontro' })
       return
     }
+    console.log(contT)
     const num = parseInt(contT.NumIntegrantes)
     if (cont < num) {
       const user = await employes.findOneBy({ id_usuario })
@@ -111,6 +116,7 @@ export const updateUserTeams = async (req: Request, res: Response): Promise<void
         res.status(404).json({ message: 'User does dont exist' })
         return
       }
+      console.log(user)
       user.idEquipo = id_equipo
       await user.save()
       res.status(200).json({ data: 'Usuario asignado a un grupos' })
@@ -154,19 +160,15 @@ export const getInfo = async (req: Request, res: Response): Promise<void> => {
     res.status(505).json({ info: 'Internal error server' })
   }
 }
-// export const contIntegrate = async (id_equipo: string, id_usuario: string): Promise<boolean | undefined > => {
-//   try {
-//     if (id_usuario === null || id_equipo === null) {
-//       console.log('No se han enviado todos los datos necesarios')
-//       return
-//     }
-//     const cont = await employes.countBy({ id_equipo })
-//     const contT = await getId(id_equipo)
-//     if (contT === undefined) {
-//       return
-//     }
-//     return true
-//   } catch (error) {
-
-//   }
-// }
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, contrasena, idEstado, idEquipo } = req.body
+    const responseEmpleados = await employes.findOne({ where: { id_usuario } })
+    if (responseEmpleados === null) {
+      res.status(404).json({ data: 'empleado not found' })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(505).json({ info: 'Internal error server' })
+  }
+}

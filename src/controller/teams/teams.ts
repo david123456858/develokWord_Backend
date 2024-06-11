@@ -80,7 +80,18 @@ export const getId = async (id: string): Promise<equipos | undefined> => {
     console.log(error)
   }
 }
-
-// export const updateTeams = async () => {
-
-// }
+export const searchTeams = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { nombre_equipo } = req.body
+    const responseSearch = await equipos.find({
+      where: { nombre_equipo },
+      relations: {
+        estados: true
+      }
+    })
+    res.status(200).json({ data: responseSearch })
+  } catch (error) {
+    res.status(505).json({ info: 'Error internal server' })
+    console.log(error)
+  }
+}
