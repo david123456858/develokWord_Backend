@@ -61,7 +61,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     user.idEstado = idEstado
     user.contrasena = password
     user.idEquipo = idEquipo
-    if (id_usuario === null || nombre1 === null || apellido1 === null || correo === null || contrasena === null || idRol === null || idEstado === null) {
+    if (id_usuario === null || id_usuario === undefined || nombre1 === null || apellido1 === null || correo === null || contrasena === null || idRol === null || idEstado === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',

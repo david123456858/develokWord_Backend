@@ -11,7 +11,7 @@ export const createTeams = async (req: Request, res: Response): Promise<void> =>
     equipo.nombre_equipo = nombre_equipo
     equipo.estados = estados
     equipo.NumIntegrantes = NumIntegrantes
-    if (id_equipo === null || nombre_equipo === null || estados === null) {
+    if (id_equipo === null || id_equipo === undefined || nombre_equipo === null || estados === null || estados === undefined || NumIntegrantes === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',
