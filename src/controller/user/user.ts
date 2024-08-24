@@ -61,7 +61,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     user.idEstado = idEstado
     user.contrasena = password
     user.idEquipo = idEquipo
-    if (id_usuario === null || nombre1 === null || apellido1 === null || correo === null || contrasena === null || idRol === null || idEstado === null) {
+    if (id_usuario === null || id_usuario === undefined || nombre1 === null || apellido1 === null || correo === null || contrasena === null || idRol === null || idEstado === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',
@@ -163,6 +163,8 @@ export const getInfo = async (req: Request, res: Response): Promise<void> => {
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id_usuario, nombre1, nombre2, apellido1, apellido2, correo, idEstado, idEquipo } = req.body
+    console.log(idEstado)
+
     const responseEmpleados = await employes.findOne({ where: { id_usuario } })
     if (responseEmpleados === null) {
       res.status(404).json({ data: 'empleado not found' })
@@ -175,6 +177,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
     responseEmpleados.apellido2 = apellido2
     responseEmpleados.correo = correo
     responseEmpleados.idEquipo = idEquipo
+    console.log('AQUIIII', idEstado)
     responseEmpleados.idEstado = idEstado
     await responseEmpleados.save()
     res.status(200).json({ data: 'Se actualizo correctamente el usuario' })

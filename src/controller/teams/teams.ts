@@ -11,7 +11,7 @@ export const createTeams = async (req: Request, res: Response): Promise<void> =>
     equipo.nombre_equipo = nombre_equipo
     equipo.estados = estados
     equipo.NumIntegrantes = NumIntegrantes
-    if (id_equipo === null || nombre_equipo === null || estados === null) {
+    if (id_equipo === null || id_equipo === undefined || nombre_equipo === null || estados === null || estados === undefined || NumIntegrantes === null) {
       res.status(422).json({
         detail: {
           info: 'Unprocessable Content',
@@ -90,6 +90,24 @@ export const searchTeams = async (req: Request, res: Response): Promise<void> =>
       }
     })
     res.status(200).json({ data: responseSearch })
+  } catch (error) {
+    res.status(505).json({ info: 'Error internal server' })
+    console.log(error)
+  }
+}
+export const updateTeams = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id_equipo, nombre_equipo, NumIntegrantes, estados } = req.body
+    const responseTeam = await equipos.findOne({ where: { id_equipo } })
+    if (responseTeam === null) {
+      res.status(404).json({ data: 'No encontre nada' })
+      return
+    }
+    responseTeam.nombre_equipo = nombre_equipo
+    responseTeam.NumIntegrantes = NumIntegrantes
+    responseTeam.estados = estados
+    await responseTeam.save()
+    res.status(200).json({ data: 'Ya se actualizo ' })
   } catch (error) {
     res.status(505).json({ info: 'Error internal server' })
     console.log(error)
