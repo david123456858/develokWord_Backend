@@ -28,14 +28,10 @@ export const tokenSing = async (user: User): Promise<any> => {
     throw new Error()
   }
 }
-export const userFrom = (jsonwebtoken: string): User | undefined => {
+export const userFrom = (jsonwebtoken: string): jwt.myJwtRol => {
   try {
-    const { user, rol } = jwt.verify(jsonwebtoken, processToken) as jwt.myJwtRol
-    const fromuser: User = {
-      user,
-      rol
-    }
-    return fromuser
+    const data = jwt.verify(jsonwebtoken, processToken) as jwt.myJwtRol // se convierte en el tipo
+    return data
   } catch (error) {
     console.log(error)
     throw new Error()

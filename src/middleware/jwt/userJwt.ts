@@ -10,6 +10,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction): void 
       res.status(401).json({ data: 'not found token' })
       return
     }
+
     const decode = token?.split(' ').pop()
     const verify = decode ?? ''
     const newDecode = userFrom(verify)
