@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+
 export const encryptPassWord = async (pass: string): Promise<string | undefined> => {
   try {
     if (pass === null) {
