@@ -4,23 +4,20 @@ import { User } from '../entity/user'
 
 config()
 
-if (process.env.PASSWORDTOKEN === null) {
-  throw new Error()
-}
+const { PASSWORDTOKEN } = process.env
 
 declare module 'jsonwebtoken' {
   export interface myJwtRol extends jwt.JwtPayload {
     user: string
   }
 }
-const processToken = process.env.PASSWORDTOKEN !== undefined ? process.env.PASSWORDTOKEN : ''
 
 export const tokenSing = async (user: User): Promise<any> => {
   try {
     return jwt.sign({
       user: user.user,
       rol: user.rol
-    }, processToken, {
+    }, PASSWORDTOKEN as string, {
       expiresIn: '1h'
     }
     )
@@ -30,7 +27,7 @@ export const tokenSing = async (user: User): Promise<any> => {
 }
 export const userFrom = (jsonwebtoken: string): jwt.myJwtRol => {
   try {
-    const data = jwt.verify(jsonwebtoken, processToken) as jwt.myJwtRol // se convierte en el tipo
+    const data = jwt.verify(jsonwebtoken, PASSWORDTOKEN as string) as jwt.myJwtRol // se convierte en el tipo
     return data
   } catch (error) {
     console.log(error)
